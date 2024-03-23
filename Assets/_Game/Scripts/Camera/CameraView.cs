@@ -10,10 +10,6 @@ namespace Scripts.Camera
         public Transform          transformCached;
         public UnityEngine.Camera cameraObject;
 
-        public Transform positionTransform;
-        public Transform rotationTransform;
-        public Transform distanceTransform;
-        
         private void Reset( )
         {
             transformCached = transform;

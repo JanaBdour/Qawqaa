@@ -1,4 +1,4 @@
-using Scripts.Ticking;
+using Scripts.PlayerLoop;
 using UnityEngine;
 using Zenject;
 
@@ -10,11 +10,11 @@ namespace Scripts.Ui
         private UiView   _ui;
 
         [Inject]
-        private void Construct( UiConfig config, ITickingService tickingService )
+        private void Construct( UiConfig config, IPlayerLoopService playerLoopService )
         {
             _config = config;
             
-            tickingService.OnStarted += OnStarted;
+            playerLoopService.OnStarted += OnStarted;
         }
 
         private void OnStarted( )

@@ -45,22 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers:
-  - {fileID: 11400000, guid: 143f1751d4cfa41efbcbf1f0d34275cc, type: 2}
   - {fileID: 11400000, guid: 650aafa681aa44e428baac1b1ed5331c, type: 2}
-  - {fileID: 11400000, guid: 4d0f690ca9bad42849b4fbc63fa9e944, type: 2}
   - {fileID: 11400000, guid: 6e8e0ac6dc4334296a27d577e8cb5ee1, type: 2}
-  - {fileID: 11400000, guid: 9dfed0a88830b4f71a0979bc95f522d4, type: 2}
-  - {fileID: 11400000, guid: f227546f92e5141a194f47591c395e22, type: 2}
-  - {fileID: 11400000, guid: fb8f5c3c954df4af28b81c755313ba10, type: 2}
-  - {fileID: 11400000, guid: b7240f09155474587bb37c60d9d037d7, type: 2}
-  - {fileID: 11400000, guid: 27f578bf10b2c462dbd7d332799d01e6, type: 2}
-  - {fileID: 11400000, guid: f799b31cf881d4493bb4c5cbf7a6c996, type: 2}
-  - {fileID: 11400000, guid: 214cdec96fbb8466ba6bb532a832eb65, type: 2}
-  - {fileID: 11400000, guid: c6c485a1df68e468d98a5b5059d89ad2, type: 2}
-  - {fileID: 11400000, guid: 31868c101bf65409b95b9289b7a576a0, type: 2}
-  - {fileID: 11400000, guid: 0ca23a54304a643378a00f622c764e69, type: 2}
   - {fileID: 11400000, guid: 5a059b317d39c49a08e64212cf770e34, type: 2}
-  - {fileID: 11400000, guid: 3cbe7b44b0b6e4d0ca588068a34c1710, type: 2}
+  - {fileID: 11400000, guid: f10d975412ea54d809887c93826049f9, type: 2}
+  - {fileID: 11400000, guid: dd940285fbdbe49de8c1949947e4ab88, type: 2}
   _monoInstallers: []
   _installerPrefabs: []
   _autoRun: 1
