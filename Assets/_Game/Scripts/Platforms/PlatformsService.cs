@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Scripts.Distance;
 using Scripts.Extensions;
 using Scripts.PlayerLoop;
 using UnityEngine;
@@ -11,19 +12,54 @@ namespace Scripts.Platforms
 	{
 		private PlatformsConfig    _config;
 		private List<PlatformView> _platforms;
+		private IDistanceService   _distanceService;
 
 		[Inject]
-		private void Construct( PlatformsConfig config, IPlayerLoopService playerLoopService )
+		private void Construct( PlatformsConfig config, IDistanceService distanceService, IPlayerLoopService playerLoopService )
 		{
-			_config    = config;
-			_platforms = new List<PlatformView>( );
-
+			_config          = config;
+			_platforms       = new List<PlatformView>( );
+			_distanceService = distanceService;
+			
 			playerLoopService.OnStarted += DestroyAndSpawn;
+		}
+		
+		public PlatformView GetLowestPlatform( )
+		{
+			var lowestY = Mathf.Infinity;
+			
+			PlatformView lowestPlatform = null;
+			foreach ( var platform in _platforms )
+			{
+				if ( platform.transformCached.position.y >= lowestY ) continue;
+
+				lowestY        = platform.transformCached.position.y;
+				lowestPlatform = platform;
+			}
+
+			return lowestPlatform;
+		}
+
+		public PlatformView GetClosestPlatformOnX( float xPosition )
+		{
+			var lowestDistance = Mathf.Infinity;
+			
+			PlatformView closestPlatform = null;
+			foreach ( var platform in _platforms )
+			{
+				var distance = Mathf.Abs( platform.transformCached.position.x - xPosition );
+				if ( distance >= lowestDistance ) continue;
+
+				lowestDistance  = distance;
+				closestPlatform = platform;
+			}
+
+			return closestPlatform;
 		}
 
 		private void DestroyAndSpawn( )
 		{
-			Profiler.BeginSample( "Platform Spawning" );
+			Profiler.BeginSample( "Initial Platform Spawning" );
 			foreach ( var platform in _platforms )
 			{
 				Object.Destroy( platform.gameObjectCached );
@@ -53,6 +89,8 @@ namespace Scripts.Platforms
 				position.x += lastCollider.bounds.size.x    * 0.5f - lastCollider.offset.x;
 				position.x += currentCollider.bounds.size.x * 0.5f - currentCollider.offset.x;
 
+				position += Vector3Extensions.GetRandomVector( _config.minDistance, _config.maxDistance ) * _distanceService.GetDifficulty( position.x );
+				
 				platform.transformCached.position = position;
 				platform.transformCached.rotation = _config.rotation;
 
