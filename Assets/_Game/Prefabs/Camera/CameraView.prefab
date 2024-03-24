@@ -47,9 +47,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformCached: {fileID: 6170234202363187893}
   cameraObject: {fileID: 6170234202937244579}
-  positionTransform: {fileID: 0}
-  rotationTransform: {fileID: 0}
-  distanceTransform: {fileID: 0}
 --- !u!1 &6170234202937244588
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +90,7 @@ Camera:
   m_GameObject: {fileID: 6170234202937244588}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.511, g: 0.8552123, b: 1, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2

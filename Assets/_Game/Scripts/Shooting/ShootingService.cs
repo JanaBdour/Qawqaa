@@ -12,7 +12,7 @@ namespace Scripts.Shooting
 {
 	public class ShootingService : IShootingService
     {
-        public event Action<Vector3, Vector3> OnShoot = delegate { };
+        public event Action<Vector3> OnShoot = delegate { };
 
         private ShootingConfig _config;
         private IPlayerService _playerService;
@@ -29,7 +29,7 @@ namespace Scripts.Shooting
 
         private Vector3 _startMousePosition;
 
-        private Vector3 originPosition => _playerService.Player.transformCached.position;
+        private Vector3 originPosition => _playerService.Player.shootPositionTransform.position;
 
         [Inject]
         private void Construct( ShootingConfig config, IPlayerService playerService, ICameraService cameraService,
@@ -45,7 +45,7 @@ namespace Scripts.Shooting
 
             CreateSimulatedObject( );
 
-            playerLoop.OnStarted    += DisableTrajectory;
+            playerLoop.OnStarted    += DisableAndResetTrajectory;
             playerLoop.OnUpdateTick += HandleProjectiles;
 
             void CreateSimulatedObject( )
@@ -53,14 +53,15 @@ namespace Scripts.Shooting
                 var parameters = new CreateSceneParameters( LocalPhysicsMode.Physics2D );
                 _simScene        = SceneManager.CreateScene( "Simulation", parameters );
                 _physicsSim      = _simScene.GetPhysicsScene2D( );
-                _shootingSimulation = Object.Instantiate( _config.simulationPrefab, originPosition, Quaternion.identity );
+                _shootingSimulation = Object.Instantiate( _config.simulationPrefab );
                 SceneManager.MoveGameObjectToScene( _shootingSimulation.gameObjectCached, _simScene );
             }
         }
-
-        private void DisableTrajectory( )
+        
+        private void DisableAndResetTrajectory( )
         {
-            _trajectory.lineCached.enabled = false;
+            _trajectory.lineCached.enabled               = false;
+            _shootingSimulation.transformCached.position = originPosition;
         }
 
         private void HandleProjectiles( )
@@ -80,7 +81,7 @@ namespace Scripts.Shooting
             if ( Input.GetMouseButtonUp( 0 ) )
             {
                 _trajectory.lineCached.enabled = false;
-                OnShoot.Invoke( originPosition, GetForce( ) );
+                OnShoot.Invoke( GetForce( ) );
             }
         }
 
@@ -94,7 +95,7 @@ namespace Scripts.Shooting
             var direction = -( GetMousePosition( ) - _startMousePosition );
             var force     = new Vector3( direction.x * _config.throwForce.x, direction.y * _config.throwForce.y );
 
-            force.x = Mathf.Clamp( force.x, 0, _config.maxForce.x );
+            force.x = Mathf.Clamp( force.x, -_config.maxForce.x, _config.maxForce.x );
             force.y = Mathf.Clamp( force.y, -_config.maxForce.y * 0.5f, _config.maxForce.y );
 
             return force;

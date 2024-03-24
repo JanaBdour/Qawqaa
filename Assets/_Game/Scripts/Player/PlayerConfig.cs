@@ -6,5 +6,7 @@ namespace Scripts.Player
 	public class PlayerConfig : ScriptableObject
 	{
 		public PlayerView prefab;
+		public Vector3    position;
+		public Quaternion rotation;
 	}
 }

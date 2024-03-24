@@ -9,5 +9,9 @@ namespace Scripts.PlayerLoop
         event Action OnFixedTick;
         event Action OnLateTick;
         event Action OnStarted;
+        event Action OnLoopEnded;
+
+        void Restart( );
+        void EndLoop( );
     }
 }

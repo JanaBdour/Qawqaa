@@ -10,6 +10,7 @@ namespace Scripts.PlayerLoop
         public event Action OnFixedTick  = delegate { };
         public event Action OnLateTick   = delegate { };
         public event Action OnStarted    = delegate { };
+        public event Action OnLoopEnded  = delegate { };
 
         [Inject]
         private void Construct( )
@@ -21,5 +22,15 @@ namespace Scripts.PlayerLoop
         internal void DispatchFixedTick( )  => OnFixedTick.Invoke( );
         internal void DispatchLateTick( )   => OnLateTick.Invoke( );
         internal void DispatchStart( )      => OnStarted.Invoke( );
+
+        public void Restart( )
+        {
+            OnStarted.Invoke( );
+        }
+
+        public void EndLoop( )
+        {
+            OnLoopEnded.Invoke( );
+        }
     }
 }
