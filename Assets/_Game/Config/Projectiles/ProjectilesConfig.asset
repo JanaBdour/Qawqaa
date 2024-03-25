@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b22f77b1ca740a794d8c5a89cadc0e, type: 3}
-  m_Name: ServiceCreator
+  m_Script: {fileID: 11500000, guid: c51a070d6bf1c469db16336f883fafac, type: 3}
+  m_Name: ProjectilesConfig
   m_EditorClassIdentifier: 
-  context: {fileID: 1428976796821062909, guid: a3187a6a5e1b14055b01ff8bf9acab11, type: 3}
-  parentFolder: 
-  serviceName: Projectiles
+  prefab: {fileID: 2816547135706722298, guid: 7b16b33f0c60a45e8be0a692e33cd11e, type: 3}
+  forceMultiplier: 1.3
+  maxLifetime: 2
+  normalScale: 60
+  pulseAddedScale: 20
+  pulseSpeed: 4

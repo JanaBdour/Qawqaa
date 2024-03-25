@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a902b7134e92d44919401c3df18b1267, type: 3}
   m_Name: DistanceConfig
   m_EditorClassIdentifier: 
+  maxDifficultyDistance: 300
+  newDistanceTolerance: 0.05
