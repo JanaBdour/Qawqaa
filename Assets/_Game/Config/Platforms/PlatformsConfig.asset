@@ -30,6 +30,6 @@ MonoBehaviour:
   - {fileID: 6663139771225793775, guid: a5fe233e0997248b8b29e4c725786bef, type: 3}
   - {fileID: 6663139771225793775, guid: 4e895edf9a0624f159d390f98948587e, type: 3}
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
-  startCount: 100
+  startCount: 10
   minDistance: {x: 4, y: -5, z: 0}
   maxDistance: {x: 10, y: 5, z: 0}
