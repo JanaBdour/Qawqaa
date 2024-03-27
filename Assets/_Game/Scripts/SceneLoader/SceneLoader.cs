@@ -22,10 +22,9 @@ namespace Scripts.SceneLoader
 
         private void Start()
         {
-            HandleLoadScenes( );
         }
         
-        private void HandleLoadScenes()
+        public void HandleLoadScenes()
         {
             SceneManager.LoadSceneAsync( coreSceneName, LoadSceneMode.Additive );
         }

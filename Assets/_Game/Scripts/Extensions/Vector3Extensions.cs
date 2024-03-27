@@ -21,6 +21,21 @@ namespace Scripts.Extensions
             return new Vector3( original.x, original.y, z );
         }
         
+        public static Vector3 AddX( this Vector3 original, float x )
+        {
+            return new Vector3( original.x + x, original.y, original.z );
+        }
+        
+        public static Vector3 AddY( this Vector3 original, float y )
+        {
+            return new Vector3( original.x, original.y + y, original.z );
+        }
+        
+        public static Vector3 AddZ( this Vector3 original, float z )
+        {
+            return new Vector3( original.x, original.y, original.z + z );
+        }
+        
         public static Vector3 GetRandomVector( Vector3 minVector, Vector3 maxVector )
         {
             Random.InitState( (int) DateTime.Now.Ticks );

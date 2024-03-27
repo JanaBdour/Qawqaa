@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 7153590455829691549}
   - component: {fileID: 5706946016746972255}
   - component: {fileID: 3917272442396331594}
+  - component: {fileID: 6720329539800372797}
+  - component: {fileID: 2236799385999574983}
   m_Layer: 10
   m_Name: Projectile
   m_TagString: Untagged
@@ -100,6 +102,38 @@ CircleCollider2D:
   m_Offset: {x: 0.000000014028046, y: -0.0000000017462298}
   serializedVersion: 2
   m_Radius: 0.00199296
+--- !u!122 &6720329539800372797
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4431076835662738200}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 855638015
+  m_Size: 0
+--- !u!95 &2236799385999574983
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4431076835662738200}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bbf377bd49ed44754a2428cdb2f5c44b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7856037167813909903
 GameObject:
   m_ObjectHideFlags: 0

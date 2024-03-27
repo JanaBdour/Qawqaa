@@ -13,6 +13,7 @@ namespace Scripts.Shooting
 	public class ShootingService : IShootingService
     {
         public event Action<Vector3> OnShoot = delegate { };
+        public event Action<Vector3> OnAim   = delegate { };
 
         private ShootingConfig _config;
         private IPlayerService _playerService;
@@ -75,6 +76,7 @@ namespace Scripts.Shooting
             {
                 var force = GetForce( );
                 _trajectory.lineCached.enabled = force.sqrMagnitude >= _config.minForceMagnitude;
+                OnAim.Invoke( force );
                 SimulateLaunch( force );
             }
 
@@ -89,10 +91,15 @@ namespace Scripts.Shooting
         {
             return new Vector3( Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height );
         }
+
+        private Vector3 GetDirection( )
+        {
+            return -( GetMousePosition( ) - _startMousePosition );
+        }
         
         private Vector3 GetForce( )
         {
-            var direction = -( GetMousePosition( ) - _startMousePosition );
+            var direction = GetDirection( );
             var force     = new Vector3( direction.x * _config.throwForce.x, direction.y * _config.throwForce.y );
 
             force.x = Mathf.Clamp( force.x, -_config.maxForce.x, _config.maxForce.x );

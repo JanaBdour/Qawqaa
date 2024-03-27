@@ -6,6 +6,7 @@ namespace Scripts.Player
     {
         public Transform   shootPositionTransform;
         public Transform   transformCached;
+        public Transform   shellTransform;
         public GameObject  gameObjectCached;
         public Rigidbody2D rigidbodyCached;
 

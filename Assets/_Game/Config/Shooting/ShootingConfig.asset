@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   simulationPrefab: {fileID: 3294001583025435263, guid: aabd85445d32e4534b1829724541e329, type: 3}
   trajectoryPrefab: {fileID: 4686012394043500902, guid: 435b43ce6cb1f44a7aa7b925821ea614, type: 3}
-  throwForce: {x: 20, y: 15}
-  maxForce: {x: 23, y: 17}
-  trajectorySteps: 20
+  throwForce: {x: 30, y: 20}
+  maxForce: {x: 30, y: 25}
+  trajectorySteps: 30
   collisionCheckRadius: 0.1
   minForceMagnitude: 0.1
