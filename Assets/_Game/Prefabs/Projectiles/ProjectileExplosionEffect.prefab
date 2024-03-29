@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 1699648280452330}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9.429012, y: 9.429009, z: 9.429009}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4557985939982028}
   m_RootOrder: 0
@@ -50,7 +50,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -1449,22 +1449,22 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0, b: 0, a: 1}
-        key1: {r: 1, g: 0.030551998, b: 0, a: 1}
-        key2: {r: 1, g: 0.6415999, b: 0, a: 0}
-        key3: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 0}
-        key4: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 0}
-        key5: {r: 0, g: 0, b: 0, a: 0}
-        key6: {r: 0, g: 0, b: 0, a: 0}
-        key7: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 1, g: 0.75294, b: 0.74118, a: 1}
+        key2: {r: 1, g: 0.96078, b: 0.76078, a: 0}
+        key3: {r: 1, g: 1, b: 0.62353, a: 0}
+        key4: {r: 0.88235, g: 1, b: 0.64706, a: 0}
+        key5: {r: 0.56863, g: 0.73333, b: 0.47059, a: 0}
+        key6: {r: 0.86667, g: 1, b: 1, a: 0}
+        key7: {r: 1, g: 1, b: 1, a: 0}
         ctime0: 0
-        ctime1: 964
-        ctime2: 20239
-        ctime3: 39899
-        ctime4: 65535
-        ctime5: 0
-        ctime6: 0
-        ctime7: 0
+        ctime1: 8096
+        ctime2: 16962
+        ctime3: 25829
+        ctime4: 35466
+        ctime5: 44718
+        ctime6: 55898
+        ctime7: 65535
         atime0: 0
         atime1: 65535
         atime2: 0
@@ -1474,7 +1474,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 5
+        m_NumColorKeys: 8
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -4980,6 +4980,7 @@ GameObject:
   - component: {fileID: 4557985939982028}
   - component: {fileID: 198022105607157766}
   - component: {fileID: 199615765409212924}
+  - component: {fileID: 6060928216597248121}
   m_Layer: 0
   m_Name: ProjectileExplosionEffect
   m_TagString: Untagged
@@ -4996,7 +4997,7 @@ Transform:
   m_GameObject: {fileID: 1992261951483456}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.28, y: -2.57, z: 9.03}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4353628398055718}
@@ -5020,7 +5021,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -6419,22 +6420,22 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0, b: 0, a: 1}
-        key1: {r: 1, g: 0.030551998, b: 0, a: 1}
-        key2: {r: 1, g: 0.6415999, b: 0, a: 0}
-        key3: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 0}
-        key4: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 0}
-        key5: {r: 0, g: 0, b: 0, a: 0}
-        key6: {r: 0, g: 0, b: 0, a: 0}
-        key7: {r: 0, g: 0, b: 0, a: 0}
+        key0: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 1, g: 0.75294, b: 0.74118, a: 1}
+        key2: {r: 1, g: 0.96078, b: 0.76078, a: 0}
+        key3: {r: 1, g: 1, b: 0.62353, a: 0}
+        key4: {r: 0.88235, g: 1, b: 0.64706, a: 0}
+        key5: {r: 0.56863, g: 0.73333, b: 0.47059, a: 0}
+        key6: {r: 0.86667, g: 1, b: 1, a: 0}
+        key7: {r: 1, g: 1, b: 1, a: 0}
         ctime0: 0
-        ctime1: 964
-        ctime2: 20239
-        ctime3: 39899
-        ctime4: 65535
-        ctime5: 0
-        ctime6: 0
-        ctime7: 0
+        ctime1: 8096
+        ctime2: 16962
+        ctime3: 25829
+        ctime4: 35466
+        ctime5: 44718
+        ctime6: 55898
+        ctime7: 65535
         atime0: 0
         atime1: 65535
         atime2: 0
@@ -6444,7 +6445,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 5
+        m_NumColorKeys: 8
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -9939,3 +9940,17 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &6060928216597248121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992261951483456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27628b0b89b84195baf026c27960b982, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transformCached: {fileID: 4557985939982028}
+  particleCached: {fileID: 198022105607157766}

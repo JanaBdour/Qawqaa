@@ -66,6 +66,8 @@ namespace Scripts.Player
 
 		private void Update( )
 		{
+			if ( !_playerLoopService.IsPlaying ) return;
+			
 			HandleRotating( );
 			HandleDying( );
 		}

@@ -15,7 +15,8 @@ MonoBehaviour:
   prefabs:
   - {fileID: 952117702355417024, guid: c6b34bcef32ef421d95234ef4ef9d74c, type: 3}
   - {fileID: 952117702355417024, guid: 813e43f4c03c249d8a242d976ea5fc8f, type: 3}
-  minDistance: 1
-  maxDistance: 0.8
+  xDistance: 2
+  minDistance: 2
+  maxDistance: 2.7
   borderSize: 0.3
-  probability: 0.3
+  probability: 0.8

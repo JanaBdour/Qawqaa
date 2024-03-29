@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b22f77b1ca740a794d8c5a89cadc0e, type: 3}
-  m_Name: ServiceCreator
+  m_Script: {fileID: 11500000, guid: bdfb82c6a558e4aa0a84473dc1091558, type: 3}
+  m_Name: EnemyInstaller
   m_EditorClassIdentifier: 
-  context: {fileID: 1428976796821062909, guid: a3187a6a5e1b14055b01ff8bf9acab11, type: 3}
-  parentFolder: 
-  serviceName: Enemy
+  config: {fileID: 11400000, guid: bbfae511ed6324ab2aa3195e45b01668, type: 2}

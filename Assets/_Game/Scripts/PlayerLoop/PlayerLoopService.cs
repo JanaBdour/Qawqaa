@@ -6,6 +6,8 @@ namespace Scripts.PlayerLoop
 {
     public class PlayerLoopService : IPlayerLoopService
     {
+        public bool IsPlaying { get; private set; }
+        
         public event Action OnUpdateTick = delegate { };
         public event Action OnFixedTick  = delegate { };
         public event Action OnLateTick   = delegate { };
@@ -16,6 +18,7 @@ namespace Scripts.PlayerLoop
         private void Construct( )
         {
             new GameObject( "PlayerLoopController" ).AddComponent<PlayerLoopController>( ).Initialize( this );
+            IsPlaying = true;
         }
 
         internal void DispatchUpdateTick( ) => OnUpdateTick.Invoke( );
@@ -26,11 +29,13 @@ namespace Scripts.PlayerLoop
         public void Restart( )
         {
             OnStarted.Invoke( );
+            IsPlaying = true;
         }
 
         public void EndLoop( )
         {
             OnLoopEnded.Invoke( );
+            IsPlaying = false;
         }
     }
 }

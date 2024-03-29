@@ -1,3 +1,4 @@
+using Scripts.Effects;
 using UnityEngine;
 
 namespace Scripts.Projectiles
@@ -6,6 +7,7 @@ namespace Scripts.Projectiles
 	public class ProjectilesConfig : ScriptableObject
 	{
 		public ProjectileView prefab;
+		public EffectView     effectPrefab;
 		public float          torque          = 0.3f;
 		public float          forceMultiplier = 1.3f;
 		public float          maxLifetime     = 2;

@@ -1,15 +1,20 @@
+using System;
 using System.Collections.Generic;
 using Scripts.Distance;
 using Scripts.Extensions;
 using Scripts.Platforms;
 using Scripts.PlayerLoop;
-using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Scripts.Obstacles
 {
 	public class ObstaclesService : IObstaclesService
 	{
+		public event Action<ObstacleView> OnSpawnObstacle   = delegate { };
+		public event Action<ObstacleView> OnDestroyObstacle = delegate { };
+
 		private ObstaclesConfig    _config;
 		private List<ObstacleView> _obstacles;
 		private IDistanceService   _distanceService;
@@ -68,6 +73,8 @@ namespace Scripts.Obstacles
 					_obstaclesByPlatform[platform].Add( obstacle );
 				else
 					_obstaclesByPlatform.Add( platform, new List<ObstacleView> {obstacle} );
+				
+				OnSpawnObstacle.Invoke( obstacle );
 			}
 		}
 
@@ -78,6 +85,7 @@ namespace Scripts.Obstacles
 			foreach ( var obstacle in _obstaclesByPlatform[platform] )
 			{
 				_obstacles.Remove( obstacle );
+				OnDestroyObstacle.Invoke( obstacle );
 				Object.Destroy( obstacle.gameObjectCached );
 			}
 

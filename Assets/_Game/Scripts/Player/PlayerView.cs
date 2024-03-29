@@ -36,8 +36,8 @@ namespace Scripts.Player
         public void ResetValues( )
         {
             deathEffect.Stop( true );
-            rendererCached.enabled = true;
-            trailRendererCached.Reset( this );
+            rendererCached.enabled      = true;
+            trailRendererCached.enabled = true;
         }
 
         private void OnCollisionEnter2D( Collision2D col )
@@ -47,6 +47,7 @@ namespace Scripts.Player
             deathEffect.Play( true );
             rendererCached.enabled = false;
             _playerService.OnHitObstacle( );
+            trailRendererCached.Reset( this, true );
         }
     }
 }

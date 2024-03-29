@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b22f77b1ca740a794d8c5a89cadc0e, type: 3}
-  m_Name: ServiceCreator
+  m_Script: {fileID: 11500000, guid: ae0be76d1a5dc4acab25f613d98888cf, type: 3}
+  m_Name: EnemyConfig
   m_EditorClassIdentifier: 
-  context: {fileID: 1428976796821062909, guid: a3187a6a5e1b14055b01ff8bf9acab11, type: 3}
-  parentFolder: 
-  serviceName: Enemy
+  waitMinDuration: 1.2
+  waitMaxDuration: 1.5
+  minJumpForce: 5
+  maxJumpForce: 7
+  killDistance: 2
