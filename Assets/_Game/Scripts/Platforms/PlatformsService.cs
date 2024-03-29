@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Distance;
@@ -7,11 +8,16 @@ using Scripts.PlayerLoop;
 using UnityEngine;
 using UnityEngine.Profiling;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace Scripts.Platforms
 {
 	public class PlatformsService : IPlatformsService
 	{
+		public event Action               OnResetPlatforms  = delegate { };
+		public event Action<PlatformView> OnSpawnPlatform   = delegate { };
+		public event Action<PlatformView> OnDestroyPlatform = delegate { };
+		
 		public PlatformView GetLowestPlatform( )
 		{
 			var lowestY = Mathf.Infinity;
@@ -71,6 +77,7 @@ namespace Scripts.Platforms
 			}
 
 			_platforms.Clear( );
+			OnResetPlatforms.Invoke( );
 
 			var startPlatform = Object.Instantiate( _config.startPlatformPrefab, Vector3.zero, _config.rotation );
 			_platforms.Add( startPlatform );
@@ -90,6 +97,7 @@ namespace Scripts.Platforms
 				var distance = _playerService.Player.transformCached.position.x - platform.transformCached.position.x;
 				if ( distance > _config.disappearDistance )
 				{
+					OnDestroyPlatform.Invoke( platform );
 					_platforms.Remove( platform );
 					Object.Destroy( platform.gameObjectCached );
 
@@ -118,6 +126,7 @@ namespace Scripts.Platforms
 			platform.transformCached.rotation = _config.rotation;
 
 			_platforms.Add( platform );
+			OnSpawnPlatform.Invoke( platform );
 		}
 	}
 }

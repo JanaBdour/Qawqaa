@@ -11,6 +11,12 @@ namespace Scripts.Player
 	{
 		public PlayerView Player { get; private set; }
 	
+		public void OnHitObstacle( )
+		{
+			
+			_playerLoopService.EndLoop( );
+		}
+
 		private PlayerConfig       _config;
 		private IPlayerLoopService _playerLoopService;
 		private IPlatformsService  _platformsService;
@@ -22,6 +28,8 @@ namespace Scripts.Player
 		{
 			_config = config;
 			Player  = Object.Instantiate( _config.prefab );
+			
+			Player.Initialize( this );
 
 			_playerLoopService  = playerLoopService;
 			_platformsService   = platformsService;
@@ -35,6 +43,8 @@ namespace Scripts.Player
 
 		private void Reset( )
 		{
+			Player.ResetValues( );
+			
 			Player.transformCached.position    = _config.position;
 			Player.transformCached.rotation    = _config.rotation;
 			Player.rigidbodyCached.velocity    = Vector2.zero;
