@@ -8,7 +8,9 @@ namespace Scripts.Player
 		public PlayerView prefab;
 		public Vector3    position;
 		public Quaternion rotation;
-		public float      rotationSpeed = 3;
+		public float      rotationSpeed     = 3;
 		public float      rotationLerpSpeed = 1;
+		public float      platformDistance  = 0.05f;
+		public LayerMask  platformLayerMask;
 	}
 }

@@ -15,9 +15,10 @@ namespace Scripts.Shooting
         public event Action<Vector3> OnShoot = delegate { };
         public event Action<Vector3> OnAim   = delegate { };
 
-        private ShootingConfig _config;
-        private IPlayerService _playerService;
-        private ICameraService _cameraService;
+        private ShootingConfig     _config;
+        private IPlayerService     _playerService;
+        private ICameraService     _cameraService;
+        private IPlayerLoopService _playerLoopService;
 
         private ShootingTrajectoryView _trajectory;
         private ShootingSimulationView _shootingSimulation;
@@ -26,8 +27,7 @@ namespace Scripts.Shooting
         private Scene          _simScene;
         private Vector3[]      _points;
         private Vector2        _lastForce;
-
-
+        
         private Vector3 _startMousePosition;
 
         private Vector3 originPosition => _playerService.Player.shootPositionTransform.position;
@@ -36,10 +36,11 @@ namespace Scripts.Shooting
         private void Construct( ShootingConfig config, IPlayerService playerService, ICameraService cameraService,
             IPlayerLoopService playerLoop )
         {
-            _config        = config;
-            _playerService = playerService;
-            _cameraService = cameraService;
-            _trajectory  = Object.Instantiate( _config.trajectoryPrefab );
+            _config            = config;
+            _playerService     = playerService;
+            _cameraService     = cameraService;
+            _playerLoopService = playerLoop;
+            _trajectory        = Object.Instantiate( _config.trajectoryPrefab );
 
             _trajectory.lineCached.positionCount = _config.trajectorySteps;
             _points = new Vector3[_config.trajectorySteps];
@@ -67,6 +68,8 @@ namespace Scripts.Shooting
 
         private void HandleProjectiles( )
         {
+            if ( !_playerLoopService.IsPlaying || _playerLoopService.GameplayTime < 0.1f ) return;
+            
             if ( Input.GetMouseButtonDown( 0 ) )
             {
                 _startMousePosition = GetMousePosition( );

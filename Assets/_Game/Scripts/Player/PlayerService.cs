@@ -1,16 +1,19 @@
+using System;
 using Scripts.Extensions;
 using Scripts.Platforms;
 using Scripts.PlayerLoop;
 using Scripts.Shooting;
 using UnityEngine;
 using Zenject;
+using Object = UnityEngine.Object;
 
 namespace Scripts.Player
 {
 	public class PlayerService : IPlayerService
 	{
-		public PlayerView Player { get; private set; }
-	
+		public PlayerView   Player { get; private set; }
+		public event Action OnHitGround = delegate { };
+
 		public void OnHitObstacle( )
 		{
 			
@@ -61,22 +64,31 @@ namespace Scripts.Player
 
 		private void ShootPlayer( Vector3 force )
 		{
-			Player.rigidbodyCached.AddForce( force, ForceMode2D.Impulse );
+			Player.rigidbodyCached.AddForce( force, StaticToggleTapToMove.TapToMove ? ForceMode2D.Force : ForceMode2D.Impulse );
 		}
 
 		private void Update( )
 		{
 			if ( !_playerLoopService.IsPlaying ) return;
-			
+
+			HandleGroundChecking( );
 			HandleRotating( );
 			HandleDying( );
+		}
+
+		private void HandleGroundChecking( )
+		{
+			if ( !Physics2D.Raycast( Player.transformCached.position.AddY( 0.05f ), -Vector2.up,
+				    _config.platformDistance, _config.platformLayerMask ) ) return;
+
+			OnHitGround.Invoke( );
 		}
 
 		private void HandleRotating( )
 		{
 			Player.shellTransform.localRotation = Quaternion.Lerp( Player.shellTransform.localRotation, _shellRotation,
 				Time.deltaTime * _config.rotationSpeed );
-			if ( Player.rigidbodyCached.velocity.sqrMagnitude > 0 )
+			if ( Player.rigidbodyCached.velocity.y > 0 )
 				_shellRotation = Quaternion.Lerp( _shellRotation, _shellStartRotation, Time.deltaTime * _config.rotationLerpSpeed );
 		}
 

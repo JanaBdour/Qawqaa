@@ -17,6 +17,7 @@ namespace Scripts.Player
         [SerializeField] private TrailRenderer  trailRendererCached;
 
         private IPlayerService _playerService;
+        private bool           _isDead;
         
         private void Reset( )
         {
@@ -38,16 +39,20 @@ namespace Scripts.Player
             deathEffect.Stop( true );
             rendererCached.enabled      = true;
             trailRendererCached.enabled = true;
+
+            _isDead = false;
         }
 
         private void OnCollisionEnter2D( Collision2D col )
         {
-            if ( !col.collider.CompareTag( "Obstacle" ) ) return;
-            
-            deathEffect.Play( true );
-            rendererCached.enabled = false;
-            _playerService.OnHitObstacle( );
-            trailRendererCached.Reset( this, true );
+            if ( col.collider.CompareTag( "Obstacle" ) && !_isDead )
+            {
+                _isDead = true;
+                deathEffect.Play( true );
+                rendererCached.enabled = false;
+                _playerService.OnHitObstacle( );
+                trailRendererCached.Reset( this, true );
+            }
         }
     }
 }

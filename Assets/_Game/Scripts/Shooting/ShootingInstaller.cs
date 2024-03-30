@@ -7,12 +7,16 @@ namespace Scripts.Shooting
 
 	public class ShootingInstaller : ScriptableObjectInstaller 
 	{
-		public ShootingConfig config;
+		public ShootingConfig configNoAim;
+		public ShootingConfig configWithAim;
 
 		public override void InstallBindings( )
 		{
-			Container.BindInstance( config );
-			Container.Bind<IShootingService>( ).To<ShootingService>( ).AsSingle( ).NonLazy( );
+			Container.BindInstance( StaticToggleTapToMove.TapToMove ? configNoAim : configWithAim );
+			if ( !StaticToggleTapToMove.TapToMove )
+				Container.Bind<IShootingService>( ).To<ShootingService>( ).AsSingle( ).NonLazy( );
+			else
+				Container.Bind<IShootingService>( ).To<NoAimShootingService>( ).AsSingle( ).NonLazy( );
 		}
 	}
 }

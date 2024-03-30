@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b965b0bc5341a41f28a26d9882231e13, type: 3}
   m_Name: ShootingInstaller
   m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: 22679483ccfc84e8ab9e529ffa974fb7, type: 2}
+  configNoAim: {fileID: 11400000, guid: 652a2b380c9ab4bb9b5072856b3b0648, type: 2}
+  configWithAim: {fileID: 11400000, guid: 22679483ccfc84e8ab9e529ffa974fb7, type: 2}
+  noAim: 1

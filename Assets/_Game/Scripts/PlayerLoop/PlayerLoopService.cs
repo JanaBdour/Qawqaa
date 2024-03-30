@@ -6,8 +6,9 @@ namespace Scripts.PlayerLoop
 {
     public class PlayerLoopService : IPlayerLoopService
     {
-        public bool IsPlaying { get; private set; }
-        
+        public bool  IsPlaying    { get; private set; }
+        public float GameplayTime { get; private set; }
+
         public event Action OnUpdateTick = delegate { };
         public event Action OnFixedTick  = delegate { };
         public event Action OnLateTick   = delegate { };
@@ -21,7 +22,13 @@ namespace Scripts.PlayerLoop
             IsPlaying = true;
         }
 
-        internal void DispatchUpdateTick( ) => OnUpdateTick.Invoke( );
+        internal void DispatchUpdateTick( )
+        {
+            if ( IsPlaying )
+                GameplayTime += Time.deltaTime;
+            OnUpdateTick.Invoke( );
+        }
+
         internal void DispatchFixedTick( )  => OnFixedTick.Invoke( );
         internal void DispatchLateTick( )   => OnLateTick.Invoke( );
         internal void DispatchStart( )      => OnStarted.Invoke( );
@@ -29,7 +36,8 @@ namespace Scripts.PlayerLoop
         public void Restart( )
         {
             OnStarted.Invoke( );
-            IsPlaying = true;
+            IsPlaying    = true;
+            GameplayTime = 0;
         }
 
         public void EndLoop( )

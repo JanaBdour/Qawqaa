@@ -5,7 +5,8 @@ namespace Scripts.PlayerLoop
 {
     public interface IPlayerLoopService
     {
-        bool IsPlaying { get; }
+        bool  IsPlaying    { get; }
+        float GameplayTime { get; }
         
         event Action OnUpdateTick;
         event Action OnFixedTick;

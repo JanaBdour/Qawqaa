@@ -8,6 +8,7 @@ namespace Scripts.Projectiles
 	{
 		public ProjectileView prefab;
 		public EffectView     effectPrefab;
+		public Vector2        force           = new Vector2( 600, 100 );
 		public float          torque          = 0.3f;
 		public float          forceMultiplier = 1.3f;
 		public float          maxLifetime     = 2;

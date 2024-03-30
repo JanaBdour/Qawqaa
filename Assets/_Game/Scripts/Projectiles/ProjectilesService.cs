@@ -49,7 +49,9 @@ namespace Scripts.Projectiles
 				Random.rotation );
 			
 			projectile.Initialize( _config, this );
-			projectile.rigidbodyCached.AddForce( force * _config.forceMultiplier, ForceMode2D.Impulse );
+			var staticForce = StaticToggleTapToMove.TapToMove;
+			projectile.rigidbodyCached.AddForce( staticForce ? _config.force : force * _config.forceMultiplier,
+				staticForce ? ForceMode2D.Force : ForceMode2D.Impulse );
 			projectile.rigidbodyCached.AddTorque( _config.torque, ForceMode2D.Impulse );
 		}
 	}

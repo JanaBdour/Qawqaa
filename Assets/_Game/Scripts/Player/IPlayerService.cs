@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Scripts.Player
@@ -5,6 +6,9 @@ namespace Scripts.Player
 	public interface IPlayerService 
 	{
 		PlayerView Player { get; }
-		void       OnHitObstacle( );
+
+		event Action OnHitGround;
+		
+		void OnHitObstacle( );
 	}
 }
