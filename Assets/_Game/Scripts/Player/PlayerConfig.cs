@@ -8,9 +8,10 @@ namespace Scripts.Player
 		public PlayerView prefab;
 		public Vector3    position;
 		public Quaternion rotation;
-		public float      rotationSpeed     = 3;
-		public float      rotationLerpSpeed = 1;
 		public float      platformDistance  = 0.05f;
+		public float      trailEnableDelay  = 0.1f;
+		public int        maxJumpCount      = 3;
+		public Vector2    throwForce        = new Vector2( 200, 130 );
 		public LayerMask  platformLayerMask;
 	}
 }

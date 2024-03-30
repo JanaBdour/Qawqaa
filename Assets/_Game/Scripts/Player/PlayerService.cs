@@ -2,7 +2,6 @@ using System;
 using Scripts.Extensions;
 using Scripts.Platforms;
 using Scripts.PlayerLoop;
-using Scripts.Shooting;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -12,35 +11,30 @@ namespace Scripts.Player
 	public class PlayerService : IPlayerService
 	{
 		public PlayerView   Player { get; private set; }
-		public event Action OnHitGround = delegate { };
+		public event Action OnMove = delegate { };
 
 		public void OnHitObstacle( )
 		{
-			
 			_playerLoopService.EndLoop( );
 		}
 
 		private PlayerConfig       _config;
 		private IPlayerLoopService _playerLoopService;
 		private IPlatformsService  _platformsService;
-		private Quaternion         _shellRotation;
-		private Quaternion         _shellStartRotation;
+		private int                _jumpCounter;
 
 		[Inject]
-		private void Construct( PlayerConfig config, IPlayerLoopService playerLoopService, IPlatformsService platformsService, IShootingService shootingService )
+		private void Construct( PlayerConfig config, IPlayerLoopService playerLoopService, IPlatformsService platformsService )
 		{
 			_config = config;
 			Player  = Object.Instantiate( _config.prefab );
 			
-			Player.Initialize( this );
+			Player.Initialize( this, _config );
 
-			_playerLoopService  = playerLoopService;
-			_platformsService   = platformsService;
-			_shellStartRotation = Player.shellTransform.localRotation;
-			
+			_playerLoopService = playerLoopService;
+			_platformsService  = platformsService;
+
 			playerLoopService.OnStarted    += Reset;
-			shootingService.OnAim          += UpdatePlayerRotation;
-			shootingService.OnShoot        += ShootPlayer;
 			playerLoopService.OnUpdateTick += Update;
 		}
 
@@ -53,43 +47,36 @@ namespace Scripts.Player
 			Player.rigidbodyCached.velocity    = Vector2.zero;
 			Player.rigidbodyCached.isKinematic = false;
 
-			_shellRotation = _shellStartRotation;
-		}
-
-		private void UpdatePlayerRotation( Vector3 force )
-		{
-			if ( force != Vector3.zero )
-				_shellRotation = Quaternion.LookRotation( force );
-		}
-
-		private void ShootPlayer( Vector3 force )
-		{
-			Player.rigidbodyCached.AddForce( force, StaticToggleTapToMove.TapToMove ? ForceMode2D.Force : ForceMode2D.Impulse );
+			_jumpCounter = _config.maxJumpCount;
 		}
 
 		private void Update( )
 		{
-			if ( !_playerLoopService.IsPlaying ) return;
+			if ( !_playerLoopService.IsPlaying || _playerLoopService.GameplayTime < 0.1f ) return;
 
-			HandleGroundChecking( );
-			HandleRotating( );
+			HandleMoving( );
+			HandleJumpResetting( );
 			HandleDying( );
 		}
 
-		private void HandleGroundChecking( )
+		private void HandleMoving( )
 		{
-			if ( !Physics2D.Raycast( Player.transformCached.position.AddY( 0.05f ), -Vector2.up,
-				    _config.platformDistance, _config.platformLayerMask ) ) return;
+			if ( !Input.GetMouseButtonDown( 0 ) ) return;
+			
+			var force = new Vector3( _config.throwForce.x, _jumpCounter > 0 ? _config.throwForce.y : 0 );
 
-			OnHitGround.Invoke( );
+			Player.rigidbodyCached.AddForce( force );
+			_jumpCounter--;
+
+			OnMove.Invoke( );
 		}
 
-		private void HandleRotating( )
+		private void HandleJumpResetting( )
 		{
-			Player.shellTransform.localRotation = Quaternion.Lerp( Player.shellTransform.localRotation, _shellRotation,
-				Time.deltaTime * _config.rotationSpeed );
-			if ( Player.rigidbodyCached.velocity.y > 0 )
-				_shellRotation = Quaternion.Lerp( _shellRotation, _shellStartRotation, Time.deltaTime * _config.rotationLerpSpeed );
+			if ( _jumpCounter > 0 || !Physics2D.Raycast( Player.transformCached.position.AddY( 0.05f ), -Vector2.up,
+				    _config.platformDistance, _config.platformLayerMask ) ) return;
+
+			_jumpCounter = _config.maxJumpCount;
 		}
 
 		private void HandleDying( )

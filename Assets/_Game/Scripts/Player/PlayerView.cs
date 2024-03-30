@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using MoreMountains.Feedbacks;
 using Scripts.Extensions;
 using UnityEngine;
 
@@ -8,39 +10,44 @@ namespace Scripts.Player
     {
         public Transform   shootPositionTransform;
         public Transform   transformCached;
-        public Transform   shellTransform;
-        public GameObject  gameObjectCached;
         public Rigidbody2D rigidbodyCached;
 
-        [SerializeField] private ParticleSystem deathEffect;
         [SerializeField] private MeshRenderer   rendererCached;
         [SerializeField] private TrailRenderer  trailRendererCached;
+        [SerializeField] private MMF_Player     deathFeedbacks;
 
         private IPlayerService _playerService;
+        private PlayerConfig   _config;
         private bool           _isDead;
         
         private void Reset( )
         {
             transformCached     = transform;
-            gameObjectCached    = gameObject;
             rigidbodyCached     = GetComponent<Rigidbody2D>( );
-            deathEffect         = GetComponentInChildren<ParticleSystem>( );
             rendererCached      = GetComponent<MeshRenderer>( );
             trailRendererCached = GetComponent<TrailRenderer>( );
         }
 
-        public void Initialize( IPlayerService playerService )
+        public void Initialize( IPlayerService playerService, PlayerConfig playerConfig )
         {
             _playerService = playerService;
+            _config        = playerConfig;
         }
 
         public void ResetValues( )
         {
-            deathEffect.Stop( true );
             rendererCached.enabled      = true;
-            trailRendererCached.enabled = true;
+            trailRendererCached.enabled = false;
 
             _isDead = false;
+
+            StartCoroutine( DelayEnablingTrailRenderer( ) );
+        }
+
+        IEnumerator DelayEnablingTrailRenderer( )
+        {
+            yield return new WaitForSeconds( _config.trailEnableDelay );
+            trailRendererCached.enabled = true;
         }
 
         private void OnCollisionEnter2D( Collision2D col )
@@ -48,8 +55,10 @@ namespace Scripts.Player
             if ( col.collider.CompareTag( "Obstacle" ) && !_isDead )
             {
                 _isDead = true;
-                deathEffect.Play( true );
+
                 rendererCached.enabled = false;
+
+                deathFeedbacks.PlayFeedbacks( );
                 _playerService.OnHitObstacle( );
                 trailRendererCached.Reset( this, true );
             }

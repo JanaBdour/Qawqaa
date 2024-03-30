@@ -5,9 +5,8 @@ namespace Scripts.Player
 {
 	public interface IPlayerService 
 	{
-		PlayerView Player { get; }
-
-		event Action OnHitGround;
+		PlayerView   Player { get; }
+		event Action OnMove;
 		
 		void OnHitObstacle( );
 	}

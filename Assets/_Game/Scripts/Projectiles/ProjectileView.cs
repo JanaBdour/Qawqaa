@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Scripts.Projectiles
 {
@@ -9,9 +10,12 @@ namespace Scripts.Projectiles
         public GameObject  gameObjectCached;
         public Rigidbody2D rigidbodyCached;
 
+        [SerializeField] private Transform localMeshTransform;
+        
         private ProjectilesConfig   _config;
         private IProjectilesService _projectilesService;
         private float               _lifetimeTimer;
+        private Vector3             _rotationDirection;
 
         private void Reset( )
         {
@@ -25,6 +29,8 @@ namespace Scripts.Projectiles
             _config             = config;
             _lifetimeTimer      = _config.maxLifetime;
             _projectilesService = projectilesService;
+
+            _rotationDirection = new Vector3( Random.Range( -1, 1 ), Random.Range( -1, 1 ), Random.Range( -1, 1 ) );
         }
 
         private void Update( )
@@ -35,6 +41,8 @@ namespace Scripts.Projectiles
                 _config.pulseAddedScale * ( _lifetimeTimer / _config.maxLifetime ),
                 Mathf.PingPong( Time.time * _config.pulseSpeed, 1 ) );
             transformCached.localScale = scale * Vector3.one;
+            
+            localMeshTransform.Rotate( _rotationDirection * Time.deltaTime * _config.localRotationSpeed, Space.Self );
 
             if ( _lifetimeTimer <= 0 )
                 _projectilesService.Explode( this );

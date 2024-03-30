@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Scripts.Effects;
 using Scripts.Player;
 using Scripts.PlayerLoop;
-using Scripts.Shooting;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -28,14 +27,14 @@ namespace Scripts.Projectiles
 		private EffectView        _explosion;
 
 		[Inject]
-		private void Construct( ProjectilesConfig config, IPlayerLoopService playerLoopService, IShootingService shootingService, IPlayerService playerService )
+		private void Construct( ProjectilesConfig config, IPlayerLoopService playerLoopService, IPlayerService playerService )
 		{
 			_config        = config;
 			_playerService = playerService;
 			_explosion     = Object.Instantiate( _config.effectPrefab );
 			
 			playerLoopService.OnStarted += StopEffect;
-			shootingService.OnShoot     += ShootNewProjectile;
+			playerService.OnMove        += ShootNewProjectile;
 		}
 
 		private void StopEffect( )
@@ -43,16 +42,14 @@ namespace Scripts.Projectiles
 			_explosion.Stop( );
 		}
 
-		private void ShootNewProjectile( Vector3 force )
+		private void ShootNewProjectile( )
 		{
 			var projectile = Object.Instantiate( _config.prefab, _playerService.Player.shootPositionTransform.position,
 				Random.rotation );
 			
 			projectile.Initialize( _config, this );
-			var staticForce = StaticToggleTapToMove.TapToMove;
-			projectile.rigidbodyCached.AddForce( staticForce ? _config.force : force * _config.forceMultiplier,
-				staticForce ? ForceMode2D.Force : ForceMode2D.Impulse );
-			projectile.rigidbodyCached.AddTorque( _config.torque, ForceMode2D.Impulse );
+			projectile.rigidbodyCached.AddForce( _config.force );
+			projectile.rigidbodyCached.AddTorque( _config.torque );
 		}
 	}
 }

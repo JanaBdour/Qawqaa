@@ -120,7 +120,7 @@ namespace Scripts.Platforms
 			position.x += lastCollider.bounds.size.x    * 0.5f - lastCollider.offset.x;
 			position.x += currentCollider.bounds.size.x * 0.5f - currentCollider.offset.x;
 
-			position += Vector3Extensions.GetRandomVector( _config.minDistance, _config.maxDistance ) * _distanceService.GetDifficulty( position.x );
+			position += Vector3Extensions.GetRandomVector( _config.minDistance, _config.maxDistance * _distanceService.GetDifficulty( position.x ) ) ;
 				
 			platform.transformCached.position = position;
 			platform.transformCached.rotation = _config.rotation;

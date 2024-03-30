@@ -1,4 +1,5 @@
 using System;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -6,12 +7,12 @@ namespace Scripts.Enemy
 {
 	public class EnemyView : MonoBehaviour
 	{
-		public Transform      meshTransform;
-		public ParticleSystem deathEffect;
+		public Transform meshTransform;
 
 		[SerializeField] private Renderer    rendererCached;
 		[SerializeField] private Rigidbody2D rigidbodyCached;
 		[SerializeField] private Collider2D  colliderCached;
+		[SerializeField] private MMF_Player  deathFeedbacks;
 
 		private EnemyConfig _config;
 		private float       _timer;
@@ -19,7 +20,6 @@ namespace Scripts.Enemy
 
 		private void Reset( )
 		{
-			deathEffect     = GetComponentInChildren<ParticleSystem>( );
 			rendererCached  = GetComponent<Renderer>( );
 			rigidbodyCached = GetComponentInChildren<Rigidbody2D>( );
 			colliderCached  = GetComponentInChildren<Collider2D>( );
@@ -37,9 +37,10 @@ namespace Scripts.Enemy
 
 	        _isDead = true;
 	        
-	        deathEffect.Play( true );
 	        rendererCached.enabled = false;
 	        colliderCached.enabled = false;
+
+	        deathFeedbacks.PlayFeedbacks( );
         }
 
         private void Update( )
