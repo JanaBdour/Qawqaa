@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acd638bf9b8fa4834a4c37f538961ea7, type: 3}
   m_Name: FeedbackConfig
   m_EditorClassIdentifier: 
+  loopEndAudioClip: {fileID: 8300000, guid: 37c8457fceaed463aaa7c633b3fcec36, type: 3}

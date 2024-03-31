@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c57de73eed0544868b8415751bd5ff11, type: 3}
   m_Name: FeedbackInstaller
   m_EditorClassIdentifier: 
-  config: {fileID: 0}
+  config: {fileID: 11400000, guid: cb2b2f5ffe2cc4986bb093fdcbfe0916, type: 2}

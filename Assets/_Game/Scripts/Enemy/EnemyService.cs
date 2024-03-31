@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Extensions;
+using Scripts.Feedback;
 using Scripts.Obstacles;
 using Scripts.PlayerLoop;
 using Scripts.Projectiles;
@@ -14,15 +15,18 @@ namespace Scripts.Enemy
 	{
 		public event Action OnKillEnemy = delegate { };
 
-		private EnemyConfig _config;
+		private EnemyConfig      _config;
+		private IFeedbackService _feedbackService;
 		
 		private Dictionary<ObstacleView, EnemyView> _enemies;
 
 		[Inject]
-		private void Construct( EnemyConfig config, IPlayerLoopService playerLoopService, IObstaclesService obstaclesService, IProjectilesService projectilesService )
+		private void Construct( EnemyConfig config, IFeedbackService feedbackService, IPlayerLoopService playerLoopService, IObstaclesService obstaclesService, IProjectilesService projectilesService )
 		{
 			_config  = config;
 			_enemies = new Dictionary<ObstacleView, EnemyView>( );
+
+			_feedbackService = feedbackService;
 
 			projectilesService.OnExplode       += KillEnemy;
 			playerLoopService.OnLoopEnded      += ClearEnemies;
@@ -67,6 +71,7 @@ namespace Scripts.Enemy
 			{
 				_enemies.Add( obstacle, enemy );
 				enemy.Initialize( _config );
+				_feedbackService.RegisterAudioSource( enemy.deathAudioSource );
 			}
 		}
 

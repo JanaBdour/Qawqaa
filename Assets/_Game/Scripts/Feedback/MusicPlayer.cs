@@ -7,16 +7,16 @@ namespace Scripts.Feedback
 {
     public class MusicPlayer : MonoBehaviour
     {
-        public static MusicPlayer Instance;
+        static MusicPlayer instance;
 
         private void Awake( )
         {
-            if ( Instance )
+            if ( instance )
                 Destroy( gameObject );
             else
             {
                 DontDestroyOnLoad( this );
-                Instance = this;
+                instance = this;
             }
         }
     }

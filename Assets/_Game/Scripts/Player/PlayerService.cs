@@ -1,6 +1,7 @@
 using System;
 using Scripts.Combo;
 using Scripts.Extensions;
+using Scripts.Feedback;
 using Scripts.Platforms;
 using Scripts.PlayerLoop;
 using UnityEngine;
@@ -37,12 +38,16 @@ namespace Scripts.Player
 		private int                _jumpCounter;
 
 		[Inject]
-		private void Construct( PlayerConfig config, IPlayerLoopService playerLoopService, IPlatformsService platformsService, IComboService comboService )
+		private void Construct( PlayerConfig config, IPlayerLoopService playerLoopService, IPlatformsService platformsService, IComboService comboService, IFeedbackService feedbackService )
 		{
 			_config = config;
 			Player  = Object.Instantiate( _config.prefab );
 			
 			Player.Initialize( this, _config );
+			foreach ( var source in Player.audioSources )
+			{
+				feedbackService.RegisterAudioSource( source );
+			}
 
 			_playerLoopService  = playerLoopService;
 			_platformsService   = platformsService;
@@ -102,7 +107,7 @@ namespace Scripts.Player
 			
 			var force = new Vector3( _config.throwForce.x, _jumpCounter > 0 ? _config.throwForce.y : 0 );
 
-			Player.rigidbodyCached.AddForce( force );
+			Player.Move( force );
 			_jumpCounter--;
 
 			OnMove.Invoke( );
@@ -125,6 +130,7 @@ namespace Scripts.Player
 			     Player.transformCached.position.y ) return;
 			
 			Player.rigidbodyCached.isKinematic = true;
+			Player.Die( );
 			_playerLoopService.EndLoop( );
 		}
 	}

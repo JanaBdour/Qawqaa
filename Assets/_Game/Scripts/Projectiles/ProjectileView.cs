@@ -9,6 +9,7 @@ namespace Scripts.Projectiles
         public Transform   transformCached;
         public GameObject  gameObjectCached;
         public Rigidbody2D rigidbodyCached;
+        public AudioSource shootAudioSource;
 
         [SerializeField] private Transform localMeshTransform;
         

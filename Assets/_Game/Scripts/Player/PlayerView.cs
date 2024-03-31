@@ -9,15 +9,18 @@ namespace Scripts.Player
 {
     public class PlayerView : MonoBehaviour
     {
-        public Transform   shootPositionTransform;
-        public Transform   transformCached;
-        public Transform   shellTransform;
-        public Rigidbody2D rigidbodyCached;
+        public Transform     shootPositionTransform;
+        public Transform     transformCached;
+        public Transform     shellTransform;
+        public Rigidbody2D   rigidbodyCached;
+        public AudioSource[] audioSources;
 
         [SerializeField] private MeshRenderer   rendererCached;
         [SerializeField] private ParticleSystem comboEffect;
         [SerializeField] private TrailRenderer  trailRendererCached;
         [SerializeField] private MMF_Player     deathFeedbacks;
+        [SerializeField] private MMF_Player     moveFeedbacks;
+        [SerializeField] private AudioSource    rotatingAudioSource;
 
         private IPlayerService _playerService;
         private PlayerConfig   _config;
@@ -50,6 +53,12 @@ namespace Scripts.Player
             StartCoroutine( DelayEnablingTrailRenderer( ) );
         }
 
+        public void Move( Vector3 force )
+        {
+            rigidbodyCached.AddForce( force );
+            moveFeedbacks.PlayFeedbacks( );
+        }
+
         public void Die( )
         {
             _isDead = true;
@@ -65,9 +74,15 @@ namespace Scripts.Player
         {
             rendererCached.sharedMaterial.DOFloat( start ? 1 : 0, "_FresnelStrength", fresnelDuration );
             if ( start )
+            {
                 comboEffect.Play( true );
+                rotatingAudioSource.Play( );
+            }
             else
+            {
                 comboEffect.Stop( true );
+                rotatingAudioSource.Pause( );
+            }
         }
 
         IEnumerator DelayEnablingTrailRenderer( )

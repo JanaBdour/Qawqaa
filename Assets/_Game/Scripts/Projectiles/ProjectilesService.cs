@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Scripts.Effects;
+using Scripts.Feedback;
 using Scripts.Player;
 using Scripts.PlayerLoop;
 using UnityEngine;
@@ -24,14 +25,18 @@ namespace Scripts.Projectiles
 
 		private ProjectilesConfig _config;
 		private IPlayerService    _playerService;
+		private IFeedbackService  _feedbackService;
 		private EffectView        _explosion;
 
 		[Inject]
-		private void Construct( ProjectilesConfig config, IPlayerLoopService playerLoopService, IPlayerService playerService )
+		private void Construct( ProjectilesConfig config, IPlayerLoopService playerLoopService, IPlayerService playerService, IFeedbackService feedbackService )
 		{
-			_config        = config;
-			_playerService = playerService;
-			_explosion     = Object.Instantiate( _config.effectPrefab );
+			_config          = config;
+			_playerService   = playerService;
+			_feedbackService = feedbackService;
+			_explosion       = Object.Instantiate( _config.effectPrefab );
+			
+			feedbackService.RegisterAudioSource( _explosion.soundSource );
 			
 			playerLoopService.OnStarted += StopEffect;
 			playerService.OnMove        += ShootNewProjectile;
@@ -50,6 +55,7 @@ namespace Scripts.Projectiles
 			projectile.Initialize( _config, this );
 			projectile.rigidbodyCached.AddForce( _config.force );
 			projectile.rigidbodyCached.AddTorque( _config.torque );
+			_feedbackService.RegisterAudioSource( projectile.shootAudioSource );
 		}
 	}
 }

@@ -55,8 +55,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b4106b670b2774ce9aa0ee19eccf6e9b, type: 2}
   - {fileID: 11400000, guid: 67d350c64cfce42b6966a71ee01468c7, type: 2}
   - {fileID: 11400000, guid: d48f547c6b4fc4a34aca75d35d5550ad, type: 2}
-  - {fileID: 11400000, guid: 226a47c18c4984780ba81a1c5d10a9e4, type: 2}
-  - {fileID: 11400000, guid: b15c02790f39e42babefa81edae998cb, type: 2}
+  - {fileID: 11400000, guid: edb5c9d5303a24f68b9debf006e38382, type: 2}
   _monoInstallers: []
   _installerPrefabs: []
   _autoRun: 1
@@ -75,4 +74,5 @@ MonoBehaviour:
   _parentNewObjectsUnderSceneContext: 0
   _contractNames:
   - Core
-  _parentContractNames: []
+  _parentContractNames:
+  - Start

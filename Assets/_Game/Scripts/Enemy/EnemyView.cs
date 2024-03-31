@@ -7,7 +7,8 @@ namespace Scripts.Enemy
 {
 	public class EnemyView : MonoBehaviour
 	{
-		public Transform meshTransform;
+		public Transform   meshTransform;
+		public AudioSource deathAudioSource;
 
 		[SerializeField] private Renderer    rendererCached;
 		[SerializeField] private Rigidbody2D rigidbodyCached;
