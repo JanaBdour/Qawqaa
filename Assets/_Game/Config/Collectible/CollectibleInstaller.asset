@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f8d74e2648e44accadd9129458b5190, type: 3}
   m_Name: CollectibleInstaller
   m_EditorClassIdentifier: 
-  config: {fileID: 0}
+  config: {fileID: 11400000, guid: db30c58820efc48c6ad1214f5e21ee69, type: 2}
