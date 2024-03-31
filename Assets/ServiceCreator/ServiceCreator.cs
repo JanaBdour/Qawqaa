@@ -62,7 +62,7 @@ namespace ServiceCreator
                               $"{namespaceName}\n"                           +
                               "{\n\tpublic class "                           + viewName + " : MonoBehaviour \n" +
                               "\t{\n"                                        +
-                              "\t\tpublic Transform meshTransform;\n "     +
+                              "\t\tpublic Transform transformCached;\n "     +
                               "\t\tpublic GameObject gameObjectCached;\n\n " +
                               "\t\tprivate void Reset( )\n\t\t{\n"           +
                               "\t\t\ttransformCached = transform;\n"         +

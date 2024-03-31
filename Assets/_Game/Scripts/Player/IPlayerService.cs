@@ -8,6 +8,6 @@ namespace Scripts.Player
 		PlayerView   Player { get; }
 		event Action OnMove;
 		
-		void OnHitObstacle( );
+		void OnHitObstacle( Collider2D obstacle );
 	}
 }

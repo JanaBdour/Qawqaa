@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Extensions;
@@ -11,6 +12,8 @@ namespace Scripts.Enemy
 {
 	public class EnemyService : IEnemyService
 	{
+		public event Action OnKillEnemy = delegate { };
+
 		private EnemyConfig _config;
 		
 		private Dictionary<ObstacleView, EnemyView> _enemies;
@@ -36,13 +39,19 @@ namespace Scripts.Enemy
 
 			void CheckObstacle( ObstacleView obstacle )
 			{
-				var enemy    = _enemies[obstacle];
+				if ( !obstacle ) return;
+
+				var enemy = _enemies[obstacle];
+				
+				if ( !enemy ) return;
+
 				var distance = ( enemy.meshTransform.position - position ).sqrMagnitude;
 
 				if ( distance <= _config.killDistance )
 				{
 					enemy.Die( );
 					_enemies.Remove( obstacle );
+					OnKillEnemy.Invoke( );
 				}
 			}
 		}
@@ -66,5 +75,6 @@ namespace Scripts.Enemy
 			if ( _enemies.ContainsKey( obstacle ) )
 				_enemies.Remove( obstacle );
 		}
+
 	}
 }

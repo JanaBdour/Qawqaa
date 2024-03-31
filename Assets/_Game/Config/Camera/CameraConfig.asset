@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraViewPrefab: {fileID: 6170234202363187894, guid: 3b76d626c046cdd4889dee0d15fa81c7, type: 3}
   virtualCameraPrefab: {fileID: -1632339049399101617, guid: ea7d724136cf84f59a3944eb2a0366cc, type: 3}
-  states:
-  - {fileID: 11400000, guid: ce9aa87ea6ba644a8aba8596989b0b27, type: 2}
-  moveSpeed: 3
-  zoomSpeed: 2
-  settlingDuration: 2
+  zoomLerpSpeed: 0.1
+  maxVelocityMagnitude: 10
+  minOrthoSize: 60
+  maxOrthoSize: 80

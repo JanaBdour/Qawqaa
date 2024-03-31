@@ -32,5 +32,5 @@ MonoBehaviour:
   rotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
   startCount: 10
   minDistance: {x: 1, y: -0.5, z: 0.1}
-  maxDistance: {x: 7, y: 0.5, z: 0.1}
+  maxDistance: {x: 9, y: 0.5, z: 0.1}
   disappearDistance: 10

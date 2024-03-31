@@ -467,10 +467,10 @@ MonoBehaviour:
         Owner: {fileID: 109877333358267069}
         DebugActive: 0
         ZoomMode: 0
-        ZoomFieldOfView: 55
+        ZoomFieldOfView: -5
         ZoomTransitionDuration: 0.05
         ZoomDuration: 0.1
-        RelativeFieldOfView: 0
+        RelativeFieldOfView: 1
         ZoomTween:
           MMTweenDefinitionType: 1
           MMTweenCurve: 4

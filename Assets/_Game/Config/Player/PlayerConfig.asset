@@ -15,10 +15,15 @@ MonoBehaviour:
   prefab: {fileID: 644908166759076967, guid: 28b489c98fc9743639f042927d8336c1, type: 3}
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
-  platformDistance: 1
   trailEnableDelay: 0.5
+  fresnelFadeDuration: 0.5
+  comboRotatingSpeed: 2000
+  comboResettingSpeed: 10
+  comboObstacleForceRadius: 5
+  comboObstacleForce: 100
   maxJumpCount: 3
   throwForce: {x: 200, y: 100}
+  platformDistance: 1
   platformLayerMask:
     serializedVersion: 2
     m_Bits: 128

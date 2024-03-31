@@ -8,10 +8,20 @@ namespace Scripts.Player
 		public PlayerView prefab;
 		public Vector3    position;
 		public Quaternion rotation;
-		public float      platformDistance  = 0.05f;
-		public float      trailEnableDelay  = 0.1f;
-		public int        maxJumpCount      = 3;
-		public Vector2    throwForce        = new Vector2( 200, 130 );
-		public LayerMask  platformLayerMask;
+		
+		public float trailEnableDelay         = 0.1f;
+		
+		[Header( "Combo Settings" )]
+		public float fresnelFadeDuration      = 0.5f;
+		public float comboRotatingSpeed       = 5;
+		public float comboResettingSpeed      = 3;
+		public float comboObstacleForceRadius = 5;
+		public float comboObstacleForce       = 100;
+		
+		[Header( "Movement Settings" )]
+		public int       maxJumpCount       = 3;
+		public Vector2   throwForce         = new Vector2( 200, 130 );
+		public float     platformDistance   = 0.05f;
+		public LayerMask platformLayerMask;
 	}
 }

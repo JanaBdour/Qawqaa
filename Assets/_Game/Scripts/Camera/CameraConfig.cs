@@ -8,9 +8,10 @@ namespace Scripts.Camera
     {
         public CameraView        cameraViewPrefab;
         public VirtualCameraView virtualCameraPrefab;
-            
-        public float moveSpeed        = 10f;
-        public float zoomSpeed        = 10f;
-        public float settlingDuration = 2; 
+
+        public float zoomLerpSpeed        = 5;
+        public float maxVelocityMagnitude = 10;
+        public float minOrthoSize         = 50;
+        public float maxOrthoSize         = 80;
     }
 }

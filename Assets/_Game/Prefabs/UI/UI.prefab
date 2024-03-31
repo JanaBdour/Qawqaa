@@ -260,7 +260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4139875562223624663, guid: 539fb74533af940f1baa8f0bd103596f, type: 3}
       propertyPath: m_Name
-      value: GameplayWindow
+      value: EndWindow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -364,7 +364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4534790641051210682, guid: 938dc804aa21941b5bc45102b91552bb, type: 3}
       propertyPath: m_Name
-      value: MainWindow
+      value: GameplayWindow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

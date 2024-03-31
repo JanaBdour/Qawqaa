@@ -1,10 +1,12 @@
 using System;
+using Scripts.Combo;
 using Scripts.Extensions;
 using Scripts.Platforms;
 using Scripts.PlayerLoop;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace Scripts.Player
 {
@@ -13,27 +15,42 @@ namespace Scripts.Player
 		public PlayerView   Player { get; private set; }
 		public event Action OnMove = delegate { };
 
-		public void OnHitObstacle( )
+		public void OnHitObstacle( Collider2D obstacle )
 		{
-			_playerLoopService.EndLoop( );
+			if ( !_comboService.IsCombo )
+			{
+				_playerLoopService.EndLoop( );
+				Player.Die( );
+			}
+			else if(obstacle.TryGetComponent<Rigidbody2D>( out Rigidbody2D obstacleRigidbody ))
+			{
+				obstacleRigidbody.AddForce( Random.insideUnitCircle * _config.comboObstacleForceRadius *
+				                            _config.comboObstacleForce );
+			}
 		}
 
 		private PlayerConfig       _config;
 		private IPlayerLoopService _playerLoopService;
 		private IPlatformsService  _platformsService;
+		private IComboService      _comboService;
+		private Quaternion         _shellStartRotation;
 		private int                _jumpCounter;
 
 		[Inject]
-		private void Construct( PlayerConfig config, IPlayerLoopService playerLoopService, IPlatformsService platformsService )
+		private void Construct( PlayerConfig config, IPlayerLoopService playerLoopService, IPlatformsService platformsService, IComboService comboService )
 		{
 			_config = config;
 			Player  = Object.Instantiate( _config.prefab );
 			
 			Player.Initialize( this, _config );
 
-			_playerLoopService = playerLoopService;
-			_platformsService  = platformsService;
+			_playerLoopService  = playerLoopService;
+			_platformsService   = platformsService;
+			_comboService       = comboService;
+			_shellStartRotation = Player.shellTransform.localRotation;
 
+			comboService.OnStartCombo      += ( ) => Player.StartCombo( true, _config.fresnelFadeDuration );
+			comboService.OnEndCombo        += ( ) => Player.StartCombo( false, _config.fresnelFadeDuration );
 			playerLoopService.OnStarted    += Reset;
 			playerLoopService.OnUpdateTick += Update;
 		}
@@ -42,10 +59,11 @@ namespace Scripts.Player
 		{
 			Player.ResetValues( );
 			
-			Player.transformCached.position    = _config.position;
-			Player.transformCached.rotation    = _config.rotation;
-			Player.rigidbodyCached.velocity    = Vector2.zero;
-			Player.rigidbodyCached.isKinematic = false;
+			Player.transformCached.position     = _config.position;
+			Player.transformCached.rotation     = _config.rotation;
+			Player.rigidbodyCached.velocity     = Vector2.zero;
+			Player.rigidbodyCached.isKinematic  = false;
+			Player.shellTransform.localRotation = _shellStartRotation;
 
 			_jumpCounter = _config.maxJumpCount;
 		}
@@ -54,11 +72,30 @@ namespace Scripts.Player
 		{
 			if ( !_playerLoopService.IsPlaying || _playerLoopService.GameplayTime < 0.1f ) return;
 
+			HandleComboRotating( );
 			HandleMoving( );
 			HandleJumpResetting( );
 			HandleDying( );
 		}
 
+		private void HandleComboRotating( )
+		{
+			if ( _comboService.IsCombo )
+			{
+				var rotationDirection = Vector3.up * Time.deltaTime * _config.comboRotatingSpeed;
+				Player.shellTransform.Rotate( Vector3.Lerp( rotationDirection, Vector3.zero, _comboService.ComboProgress ), Space.Self );
+			}
+			else
+			{
+				Player.shellTransform.localRotation = Quaternion.Lerp
+				(
+					Player.shellTransform.localRotation,
+					_shellStartRotation,
+					Time.deltaTime * _config.comboResettingSpeed
+				);
+			}
+		}
+		
 		private void HandleMoving( )
 		{
 			if ( !Input.GetMouseButtonDown( 0 ) ) return;
