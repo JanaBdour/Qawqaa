@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b22f77b1ca740a794d8c5a89cadc0e, type: 3}
-  m_Name: ServiceCreator
+  m_Script: {fileID: 11500000, guid: 6cb94185f536d4c8d919a8c33c3ad22e, type: 3}
+  m_Name: FallingStepsConfig
   m_EditorClassIdentifier: 
-  context: {fileID: 1428976796821062909, guid: a3187a6a5e1b14055b01ff8bf9acab11, type: 3}
-  parentFolder: 
-  serviceName: FallingSteps
+  prefab: {fileID: 4414502397617905505, guid: 5c51bf93fc6504d05b4a5d1d503ffcb3, type: 3}
+  startDifficulty: 0.3
+  probability: 0.6
+  stepDistance: 0.5
+  minDistanceBetweenPlatforms: 5

@@ -15,7 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 2030092958924380087, guid: a64316e3e634643e189c4d21b56f67d5, type: 3}
   offset: {x: 0, y: 0.3, z: 0}
   minCountPerPlatform: 0
-  maxCountPerPlatform: 3
+  maxCountPerPlatform: 2
   collectEffectPrefab: {fileID: -7623181307070211468, guid: 633426fad99af4cb4a55de533ac86692, type: 3}
   collectDistance: 1
   minAnimationSpeed: 0.5

@@ -14,6 +14,8 @@ namespace Scripts.Platforms
 {
 	public class PlatformsService : IPlatformsService
 	{
+		public List<PlatformView> Platforms { get; private set; }
+
 		public event Action               OnResetPlatforms  = delegate { };
 		public event Action<PlatformView> OnSpawnPlatform   = delegate { };
 		public event Action<PlatformView> OnDestroyPlatform = delegate { };
@@ -23,7 +25,7 @@ namespace Scripts.Platforms
 			var lowestY = Mathf.Infinity;
 			
 			PlatformView lowestPlatform = null;
-			foreach ( var platform in _platforms )
+			foreach ( var platform in Platforms )
 			{
 				if ( platform.transformCached.position.y >= lowestY ) continue;
 
@@ -39,7 +41,7 @@ namespace Scripts.Platforms
 			var lowestDistance = Mathf.Infinity;
 			
 			PlatformView closestPlatform = null;
-			foreach ( var platform in _platforms )
+			foreach ( var platform in Platforms )
 			{
 				var distance = Mathf.Abs( platform.transformCached.position.x - xPosition );
 				if ( distance >= lowestDistance ) continue;
@@ -51,16 +53,15 @@ namespace Scripts.Platforms
 			return closestPlatform;
 		}
 		
-		private PlatformsConfig    _config;
-		private List<PlatformView> _platforms;
-		private IDistanceService   _distanceService;
-		private IPlayerService     _playerService;
+		private PlatformsConfig  _config;
+		private IDistanceService _distanceService;
+		private IPlayerService   _playerService;
 
 		[Inject]
 		private void Construct( PlatformsConfig config, IDistanceService distanceService, IPlayerService playerService, IPlayerLoopService playerLoopService )
 		{
 			_config          = config;
-			_platforms       = new List<PlatformView>( );
+			Platforms       = new List<PlatformView>( );
 			_distanceService = distanceService;
 			_playerService   = playerService;
 			
@@ -71,16 +72,16 @@ namespace Scripts.Platforms
 		private void DestroyAndSpawn( )
 		{
 			Profiler.BeginSample( "Initial Platform Spawning" );
-			foreach ( var platform in _platforms )
+			foreach ( var platform in Platforms )
 			{
 				Object.Destroy( platform.gameObjectCached );
 			}
 
-			_platforms.Clear( );
+			Platforms.Clear( );
 			OnResetPlatforms.Invoke( );
 
 			var startPlatform = Object.Instantiate( _config.startPlatformPrefab, Vector3.zero, _config.rotation );
-			_platforms.Add( startPlatform );
+			Platforms.Add( startPlatform );
 
 			for ( var index = 0; index < _config.startCount; index++ )
 			{
@@ -92,13 +93,13 @@ namespace Scripts.Platforms
 
 		private void HandleDisappearingAndRespawning( )
 		{
-			foreach ( var platform in _platforms.ToArray( ) )
+			foreach ( var platform in Platforms.ToArray( ) )
 			{
 				var distance = _playerService.Player.transformCached.position.x - platform.transformCached.position.x;
 				if ( distance > _config.disappearDistance )
 				{
 					OnDestroyPlatform.Invoke( platform );
-					_platforms.Remove( platform );
+					Platforms.Remove( platform );
 					Object.Destroy( platform.gameObjectCached );
 
 					SpawnPlatform( );
@@ -108,7 +109,7 @@ namespace Scripts.Platforms
 		
 		private void SpawnPlatform( )
 		{
-			var lastPlatform = _platforms[^1];
+			var lastPlatform = Platforms[^1];
 
 			var platform = Object.Instantiate( _config.platformPrefabs.GetRandomElement( ) );
 
@@ -125,7 +126,7 @@ namespace Scripts.Platforms
 			platform.transformCached.position = position;
 			platform.transformCached.rotation = _config.rotation;
 
-			_platforms.Add( platform );
+			Platforms.Add( platform );
 			OnSpawnPlatform.Invoke( platform );
 		}
 	}
