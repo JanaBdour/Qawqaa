@@ -20,39 +20,49 @@ namespace Scripts.Platforms
 		public event Action<PlatformView> OnSpawnPlatform   = delegate { };
 		public event Action<PlatformView> OnDestroyPlatform = delegate { };
 		
-		public PlatformView GetLowestPlatform( )
+		public Vector3 GetStartPosition( PlatformView platform )
 		{
-			var lowestY = Mathf.Infinity;
-			
-			PlatformView lowestPlatform = null;
-			foreach ( var platform in Platforms )
-			{
-				if ( platform.transformCached.position.y >= lowestY ) continue;
+			return platform.transformCached.position.AddX( -platform.colliderCached.size.x * 0.5f +
+			                                               platform.colliderCached.offset.x );
 
-				lowestY        = platform.transformCached.position.y;
-				lowestPlatform = platform;
-			}
+		}
 
-			return lowestPlatform;
+		public Vector3 GetEndPosition( PlatformView platform )
+		{
+			return platform.transformCached.position.AddX( platform.colliderCached.size.x * 0.5f +
+			                                               platform.colliderCached.offset.x );
+		}
+		
+		public float GetXDistance( PlatformView startPlatform, PlatformView endPlatform )
+		{
+			return Mathf.Abs( GetStartPosition( endPlatform ).x - GetEndPosition( startPlatform ).x );
 		}
 
 		public PlatformView GetClosestPlatformOnX( float xPosition )
 		{
+			return GetClosestPlatformOnX( xPosition, out var index );
+		}
+
+		public PlatformView GetClosestPlatformOnX( float xPosition, out int index )
+		{
 			var lowestDistance = Mathf.Infinity;
+			index = -1;
 			
 			PlatformView closestPlatform = null;
-			foreach ( var platform in Platforms )
+			for ( var i = 0; i < Platforms.Count; i++ )
 			{
+				var platform = Platforms[i];
 				var distance = Mathf.Abs( platform.transformCached.position.x - xPosition );
 				if ( distance >= lowestDistance ) continue;
 
+				index           = i;
 				lowestDistance  = distance;
 				closestPlatform = platform;
 			}
 
 			return closestPlatform;
 		}
-		
+
 		private PlatformsConfig  _config;
 		private IDistanceService _distanceService;
 		private IPlayerService   _playerService;

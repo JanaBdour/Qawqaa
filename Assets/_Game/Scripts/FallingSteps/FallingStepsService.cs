@@ -40,12 +40,14 @@ namespace Scripts.FallingSteps
 
 		private void TrySpawnSteps( PlatformView platform )
 		{
-			var lastPlatformPosition = platform.transformCached.position.AddX( -platform.colliderCached.size.x * 0.5f );
+			var lastPlatform         = platform;
+			var lastPlatformPosition = _platformsService.GetStartPosition( lastPlatform );
 			if ( _distanceService.GetDifficulty( lastPlatformPosition.x ) < _config.startDifficulty || _platformsService.Platforms.Count < 2 ) return;
 
 			var firstPlatform         = _platformsService.Platforms[^2];
-			var firstPlatformPosition = firstPlatform.transformCached.position.AddX( firstPlatform.colliderCached.size.x * 0.5f );
-			var distance              = Mathf.Abs( firstPlatformPosition.x - lastPlatformPosition.x );
+			var firstPlatformPosition = _platformsService.GetEndPosition( firstPlatform );
+
+			var distance = Mathf.Abs( lastPlatformPosition.x - firstPlatformPosition.x );
 		
 			if ( distance < _config.minDistanceBetweenPlatforms || Random.value > _config.probability ) return;
 
@@ -58,7 +60,7 @@ namespace Scripts.FallingSteps
 			if ( endIndex <= startIndex )
 				endIndex = count;
 			
-			for ( int index = startIndex; index < endIndex; index++ )
+			for ( var index = startIndex; index < endIndex; index++ )
 			{
 				var position     = Vector3.Lerp( firstPlatformPosition, lastPlatformPosition, index     / count );
 				var nextPosition = Vector3.Lerp( firstPlatformPosition, lastPlatformPosition, ( index + 1 ) / count );

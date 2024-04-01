@@ -8,8 +8,8 @@ namespace Scripts.Player
 		public PlayerView prefab;
 		public Vector3    position;
 		public Quaternion rotation;
-		
-		public float trailEnableDelay         = 0.1f;
+
+		public float trailEnableDelay = 0.1f;
 		
 		[Header( "Combo Settings" )]
 		public float fresnelFadeDuration      = 0.5f;
@@ -23,5 +23,10 @@ namespace Scripts.Player
 		public Vector2   throwForce         = new Vector2( 200, 130 );
 		public float     platformDistance   = 0.05f;
 		public LayerMask platformLayerMask;
+		
+		public float tapDuration        = 0.01f;
+		public float holdDuration       = 1;
+		public float longMoveMultiplier = 2;
+
 	}
 }

@@ -7,6 +7,7 @@ namespace Scripts.Player
 	{
 		PlayerView   Player { get; }
 		event Action OnMove;
+		event Action OnLongMove;
 		
 		void OnHitObstacle( Collider2D obstacle );
 	}

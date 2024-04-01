@@ -14,7 +14,8 @@ namespace Scripts.Player
 	public class PlayerService : IPlayerService
 	{
 		public PlayerView   Player { get; private set; }
-		public event Action OnMove = delegate { };
+		public event Action OnMove     = delegate { };
+		public event Action OnLongMove = delegate { };
 
 		public void OnHitObstacle( Collider2D obstacle )
 		{
