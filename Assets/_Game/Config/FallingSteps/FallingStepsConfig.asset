@@ -17,3 +17,4 @@ MonoBehaviour:
   probability: 0.6
   stepDistance: 0.5
   minDistanceBetweenPlatforms: 5
+  maxMissingSteps: 3

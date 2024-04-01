@@ -12,5 +12,6 @@ namespace Scripts.FallingSteps
 
 		public float stepDistance                = 0.5f;
 		public float minDistanceBetweenPlatforms = 7;
+		public int   maxMissingSteps             = 5;
 	}
 }

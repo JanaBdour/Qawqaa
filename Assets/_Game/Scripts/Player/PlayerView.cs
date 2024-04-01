@@ -44,6 +44,7 @@ namespace Scripts.Player
         {
             rendererCached.enabled      = true;
             trailRendererCached.enabled = false;
+            rigidbodyCached.simulated   = true;
 
             _isDead = false;
 
@@ -63,7 +64,8 @@ namespace Scripts.Player
         {
             _isDead = true;
 
-            rendererCached.enabled = false;
+            rendererCached.enabled    = false;
+            rigidbodyCached.simulated = false;
 
             comboEffect.Stop( true );
             deathFeedbacks.PlayFeedbacks( );

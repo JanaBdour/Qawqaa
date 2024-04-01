@@ -49,8 +49,16 @@ namespace Scripts.FallingSteps
 		
 			if ( distance < _config.minDistanceBetweenPlatforms || Random.value > _config.probability ) return;
 
-			var count = distance / _config.stepDistance;
-			for ( int index = 0; index < count; index++ )
+			var count      = distance / _config.stepDistance;
+			var startIndex = Random.Range( 0, _config.maxMissingSteps );
+			var endIndex   = count - Random.Range( 0, _config.maxMissingSteps );
+
+			if ( startIndex >= count )
+				startIndex = 0;
+			if ( endIndex <= startIndex )
+				endIndex = count;
+			
+			for ( int index = startIndex; index < endIndex; index++ )
 			{
 				var position     = Vector3.Lerp( firstPlatformPosition, lastPlatformPosition, index     / count );
 				var nextPosition = Vector3.Lerp( firstPlatformPosition, lastPlatformPosition, ( index + 1 ) / count );
