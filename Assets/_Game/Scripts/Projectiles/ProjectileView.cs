@@ -28,10 +28,16 @@ namespace Scripts.Projectiles
         public void Initialize( ProjectilesConfig config, IProjectilesService projectilesService )
         {
             _config             = config;
-            _lifetimeTimer      = _config.maxLifetime;
             _projectilesService = projectilesService;
 
+            ResetProperties( );
+        }
+
+        public void ResetProperties( )
+        {
+            _lifetimeTimer     = _config.maxLifetime;
             _rotationDirection = new Vector3( Random.Range( -1, 1 ), Random.Range( -1, 1 ), Random.Range( -1, 1 ) );
+            shootAudioSource.Play( );
         }
 
         private void Update( )

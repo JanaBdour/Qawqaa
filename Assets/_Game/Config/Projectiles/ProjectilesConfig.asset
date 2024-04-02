@@ -16,8 +16,9 @@ MonoBehaviour:
   effectPrefab: {fileID: 6060928216597248121, guid: ad187f8c862d64ebbb13f4e078105374, type: 3}
   force: {x: 600, y: 100}
   torque: 0.1
-  forceMultiplier: 1.3
   maxLifetime: 2
   normalScale: 80
   pulseAddedScale: 30
   pulseSpeed: 5
+  localRotationSpeed: 2
+  poolInitialCount: 20
