@@ -19,6 +19,8 @@ namespace Scripts.Enemy
 		private float       _timer;
 		private bool        _isDead;
 
+		private Vector3 _startMeshPosition;
+
 		private void Reset( )
 		{
 			rendererCached  = GetComponent<Renderer>( );
@@ -26,10 +28,26 @@ namespace Scripts.Enemy
 			colliderCached  = GetComponentInChildren<Collider2D>( );
 		}
 
-        public void Initialize( EnemyConfig config )
+		private void Awake( )
+		{
+			_startMeshPosition = meshTransform.localPosition;
+		}
+
+		public void Initialize( EnemyConfig config )
         {
 	        _config = config;
+	        ResetProperties( );
+        }
+
+        public void ResetProperties( )
+        {
+	        meshTransform.localPosition = _startMeshPosition;
+	        
 	        RandomizeTimer( );
+	        _isDead = false;
+	        
+	        rendererCached.enabled = true;
+	        colliderCached.enabled = true;
         }
 
         public void Die( )

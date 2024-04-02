@@ -19,4 +19,5 @@ MonoBehaviour:
   minDistance: 2
   maxDistance: 2.7
   borderSize: 0.3
+  poolInitialCount: 60
   probability: 0.8

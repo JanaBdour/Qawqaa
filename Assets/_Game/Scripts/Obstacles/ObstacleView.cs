@@ -6,10 +6,8 @@ namespace Scripts.Obstacles
 	{
 		public Transform  transformCached;
 		public GameObject gameObjectCached;
-
-		[Range( 0, 1 )] public float difficulty = 0.5f; 
-
- 		private void Reset( )
+		
+		private void Reset( )
 		{
 			transformCached = transform;
 			gameObjectCached = gameObject;

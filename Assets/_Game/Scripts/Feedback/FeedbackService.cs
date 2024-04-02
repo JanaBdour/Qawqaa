@@ -23,7 +23,8 @@ namespace Scripts.Feedback
 		{
 			if ( !source ) return;
 
-			_audioSources.Add( source );
+			if ( !_audioSources.Contains( source ) )
+				_audioSources.Add( source );
 			source.enabled = IsSoundEnabled;
 		}
 

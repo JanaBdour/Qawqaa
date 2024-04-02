@@ -4,6 +4,7 @@ using Scripts.Distance;
 using Scripts.Extensions;
 using Scripts.Platforms;
 using Scripts.PlayerLoop;
+using UnityEngine.Pool;
 using Zenject;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -15,9 +16,10 @@ namespace Scripts.Obstacles
 		public event Action<ObstacleView> OnSpawnObstacle   = delegate { };
 		public event Action<ObstacleView> OnDestroyObstacle = delegate { };
 
-		private ObstaclesConfig    _config;
-		private List<ObstacleView> _obstacles;
-		private IDistanceService   _distanceService;
+		private ObstaclesConfig          _config;
+		private List<ObstacleView>       _obstacles;
+		private ObjectPool<ObstacleView> _pool;
+		private IDistanceService         _distanceService;
 
 		private Dictionary<PlatformView, List<ObstacleView>> _obstaclesByPlatform;
 
@@ -27,6 +29,9 @@ namespace Scripts.Obstacles
 			_config    = config;
 			_obstacles = new List<ObstacleView>( );
 
+			_pool = new ObjectPool<ObstacleView>( CreateObstacle, GetObstacle, ReleaseObstacle, DestroyObstacle, false,
+				_config.poolInitialCount );
+
 			_distanceService     = distanceService;
 			_obstaclesByPlatform = new Dictionary<PlatformView, List<ObstacleView>>( );
 
@@ -34,12 +39,37 @@ namespace Scripts.Obstacles
 			platformsService.OnSpawnPlatform   += SpawnObstacles;
 			platformsService.OnDestroyPlatform += DestroyObstacles;
 		}
+		
+		private ObstacleView CreateObstacle( )
+		{
+			return Object.Instantiate( _config.prefabs.GetRandomElement(  ) );;
+		}
+		
+		private void GetObstacle( ObstacleView obstacle )
+		{
+			obstacle.gameObjectCached.SetActive( true );
+			_obstacles.Add( obstacle );
+			OnSpawnObstacle.Invoke( obstacle );
+		}
+		
+		private void ReleaseObstacle( ObstacleView obstacle )
+		{
+			obstacle.gameObjectCached.SetActive( false );
+			_obstacles.Remove( obstacle );
+			OnDestroyObstacle.Invoke( obstacle );
+		}
+		
+		private void DestroyObstacle( ObstacleView obstacle )
+		{
+			_obstacles.Remove( obstacle );
+			OnDestroyObstacle.Invoke( obstacle );
+		}
 
 		private void Reset( )
 		{
-			foreach ( var obstacle in _obstacles )
+			foreach ( var obstacle in _obstacles.ToArray( ) )
 			{
-				Object.Destroy( obstacle.gameObjectCached );
+				_pool.Release( obstacle );
 			}
 
 			_obstacles.Clear( );
@@ -55,26 +85,21 @@ namespace Scripts.Obstacles
 			{
 				xPosition += Random.Range( _config.minDistance, _config.maxDistance );
 				if ( xPosition >= xSize - _config.borderSize || Random.value > _config.probability ) continue;
-				
+
 				SpawnObstacle( );
 			}
 
 			void SpawnObstacle( )
 			{
-				var prefab   = _config.prefabs[Random.Range( 0, _config.prefabs.Length )];
 				var position = platform.transformCached.position.AddX( xPosition - xSize * 0.5f - platform.colliderCached.offset.x );//* 0.5f + _config.borderSize );
+				var obstacle = _pool.Get( );
 
-				if ( prefab.difficulty > _distanceService.GetDifficulty( position.x ) ) return;
-
-				var obstacle = Object.Instantiate( prefab, position, prefab.transformCached.rotation );
-
-				_obstacles.Add( obstacle );
+				obstacle.transformCached.position = position;
+				
 				if ( _obstaclesByPlatform.ContainsKey( platform ) )
 					_obstaclesByPlatform[platform].Add( obstacle );
 				else
 					_obstaclesByPlatform.Add( platform, new List<ObstacleView> {obstacle} );
-				
-				OnSpawnObstacle.Invoke( obstacle );
 			}
 		}
 
@@ -84,9 +109,7 @@ namespace Scripts.Obstacles
 
 			foreach ( var obstacle in _obstaclesByPlatform[platform] )
 			{
-				_obstacles.Remove( obstacle );
-				OnDestroyObstacle.Invoke( obstacle );
-				Object.Destroy( obstacle.gameObjectCached );
+				_pool.Release( obstacle );
 			}
 
 			_obstaclesByPlatform[platform].Clear( );
