@@ -9,11 +9,12 @@ namespace Scripts.Player
 {
     public class PlayerView : MonoBehaviour
     {
-        public Transform     shootPositionTransform;
-        public Transform     transformCached;
-        public Transform     shellTransform;
-        public Rigidbody2D   rigidbodyCached;
-        public AudioSource[] audioSources;
+        public Transform       shootPositionTransform;
+        public Transform       transformCached;
+        public Transform       shellTransform;
+        public Rigidbody2D     rigidbodyCached;
+        public PlayerChargeBar barCached;
+        public AudioSource[]   audioSources;
 
         [SerializeField] private MeshRenderer   rendererCached;
         [SerializeField] private ParticleSystem comboEffect;
@@ -42,12 +43,14 @@ namespace Scripts.Player
 
         public void ResetValues( )
         {
+            barCached.gameObjectCached.SetActive( false );
             rendererCached.enabled      = true;
             trailRendererCached.enabled = false;
             rigidbodyCached.simulated   = true;
 
             _isDead = false;
 
+            rotatingAudioSource.Stop( );
             comboEffect.Stop( true );
             
             rendererCached.sharedMaterial.SetFloat( "_FresnelStrength", 0 );
@@ -64,9 +67,11 @@ namespace Scripts.Player
         {
             _isDead = true;
 
+            barCached.gameObjectCached.SetActive( false );
             rendererCached.enabled    = false;
             rigidbodyCached.simulated = false;
 
+            rotatingAudioSource.Stop( );
             comboEffect.Stop( true );
             deathFeedbacks.PlayFeedbacks( );
             trailRendererCached.Reset( this, true );

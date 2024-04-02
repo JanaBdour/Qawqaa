@@ -37,6 +37,7 @@ namespace Scripts.Player
 		private IComboService      _comboService;
 		private Quaternion         _shellStartRotation;
 		private int                _jumpCounter;
+		private float              _startClickTime;
 
 		[Inject]
 		private void Construct( PlayerConfig config, IPlayerLoopService playerLoopService, IPlatformsService platformsService, IComboService comboService, IFeedbackService feedbackService )
@@ -104,14 +105,60 @@ namespace Scripts.Player
 		
 		private void HandleMoving( )
 		{
-			if ( !Input.GetMouseButtonDown( 0 ) ) return;
-			
 			var force = new Vector3( _config.throwForce.x, _jumpCounter > 0 ? _config.throwForce.y : 0 );
+			
+			if ( Input.GetMouseButtonDown( 0 ) )
+			{
+				HandleClicking( );
+			}
+			else if ( Input.GetMouseButton( 0 ) )
+			{
+				HandleHolding( );
+			}
+			else if ( Input.GetMouseButtonUp( 0 ) )
+			{
+				HandleReleasing( );
+			}
+			
+			void HandleClicking( )
+			{
+				_startClickTime = Time.time;
+				Player.barCached.gameObjectCached.SetActive( false );
+			}
 
-			Player.Move( force );
-			_jumpCounter--;
+			void HandleHolding( )
+			{
+				var duration = Time.time - _startClickTime;
+				var progress =  duration / _config.holdDuration;
 
-			OnMove.Invoke( );
+				if ( duration > _config.tapDuration )
+				{
+					Player.barCached.gameObjectCached.SetActive( true );
+					Player.barCached.UpdateAmount( progress );
+				}
+			}
+
+			void HandleReleasing( )
+			{
+				Player.barCached.gameObjectCached.SetActive( false );
+
+				var duration = Time.time - _startClickTime;
+
+				if ( duration <= _config.tapDuration )
+				{
+					Player.Move( force );
+					_jumpCounter--;
+
+					OnMove.Invoke( );
+				}
+				else if ( duration >= _config.holdDuration )
+				{
+					Player.Move( Vector3.Scale( force, _config.longMoveMultiplier ) );
+					_jumpCounter--;
+
+					OnLongMove.Invoke( );
+				}
+			}
 		}
 
 		private void HandleJumpResetting( )

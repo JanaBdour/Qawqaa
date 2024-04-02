@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 372774989484276935}
   - component: {fileID: 1592810094578122718}
   - component: {fileID: 7985085949253388868}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Bridge_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 231554268980290312}
   - component: {fileID: 4414502397617905505}
   - component: {fileID: 4809883073386370609}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: FallingStepView
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -13,9 +13,10 @@ namespace Scripts.Tutorial
 	{
 		public event Action<string> OnShowText = delegate { };
 
-		private TutorialConfig    _config;
-		private IPlatformsService _platformsService;
-		private IPlayerService    _playerService;
+		private TutorialConfig     _config;
+		private IPlatformsService  _platformsService;
+		private IPlayerService     _playerService;
+		private IPlayerLoopService _playerLoopService;
 
 		private int    _lastIndex;
 		private bool   _hasStarted;
@@ -50,8 +51,9 @@ namespace Scripts.Tutorial
 		{
 			_config = config;
 
-			_platformsService = platformsService;
-			_playerService    = playerService;
+			_platformsService  = platformsService;
+			_playerService     = playerService;
+			_playerLoopService = playerLoopService;
 
 			playerLoopService.OnStarted    += WaitToShowTutorial;
 			playerLoopService.OnUpdateTick += Update;
@@ -61,9 +63,14 @@ namespace Scripts.Tutorial
 
 		private void WaitToShowTutorial( )
 		{
-			if ( IsWholeTutorialCompleted ) return;
+			if ( IsWholeTutorialCompleted )
+			{
+				OnShowText.Invoke( string.Empty );
+				return;
+			}
 
-			_waitTimer = _config.waitToShowTutorial;
+			_hasStarted = false;
+			_waitTimer  = _config.waitToShowTutorial;
 		}
 
 		private void Update( )
@@ -77,8 +84,7 @@ namespace Scripts.Tutorial
 			if ( IsWholeTutorialCompleted ) return;
 
 			_hasStarted = true;
-
-
+			
 			if ( !IsMoveTutorialCompleted )
 			{
 				_moveCount = _config.passMoveCount;
@@ -111,6 +117,7 @@ namespace Scripts.Tutorial
 		private void FinishLongMoveTutorial( )
 		{
 			IsLongMoveTutorialCompleted = true;
+			ShowTutorial( );
 		}
 
 		private void HandleStartWaiting( )
@@ -127,7 +134,7 @@ namespace Scripts.Tutorial
 
 		private void HandleLongMoveWaiting( )
 		{
-			if ( IsWholeTutorialCompleted || !_hasStarted || IsLongMoveTutorialCompleted ||
+			if ( _playerLoopService.GameplayTime <= 0.1f || IsWholeTutorialCompleted || !_hasStarted || IsLongMoveTutorialCompleted ||
 			     !_isWaitingForLongMove ) return;
 
 			var platform = _platformsService.GetClosestPlatformOnX( _playerService.Player.transformCached.position.x, out var index );

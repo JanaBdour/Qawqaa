@@ -16,4 +16,4 @@ MonoBehaviour:
   pulseScale: 1.2
   pulseDuration: 0.1
   passMoveCount: 3
-  longMoveDistance: 5
+  longMoveDistance: 4

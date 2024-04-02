@@ -24,9 +24,9 @@ namespace Scripts.Player
 		public float     platformDistance   = 0.05f;
 		public LayerMask platformLayerMask;
 		
-		public float tapDuration        = 0.01f;
-		public float holdDuration       = 1;
-		public float longMoveMultiplier = 2;
+		public float   tapDuration        = 0.01f;
+		public float   holdDuration       = 1;
+		public Vector3 longMoveMultiplier = new Vector3( 2, 1 );
 
 	}
 }
