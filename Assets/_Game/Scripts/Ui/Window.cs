@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace Scripts.Ui
 {
@@ -12,10 +13,11 @@ namespace Scripts.Ui
         private CanvasGroup _canvasGroup;
         private bool        _isOpened;
 
-        private const float _animationSpeed = 3f;
-        private       float _animationTimer = 0f;
+        private float _animationTimer = 0f;
 
         public bool openOnStart = false;
+
+        [Inject] private UiConfig _config;
 
         private void Awake()
         {
@@ -48,7 +50,7 @@ namespace Scripts.Ui
         public void Open( float delay )
         {
             _isOpened       = true;
-            _animationTimer = delay * -_animationSpeed;
+            _animationTimer = delay * -_config.windowAnimationSpeed;
         }
 
         public void Close()
@@ -66,12 +68,12 @@ namespace Scripts.Ui
         public void Close( float delay )
         {
             Close();
-            _animationTimer = 1 + delay * _animationSpeed;
+            _animationTimer = 1 + delay * _config.windowAnimationSpeed;
         }
 
         private void Update()
         {
-            _animationTimer    += Time.unscaledDeltaTime * ( _isOpened ? _animationSpeed : -_animationSpeed );
+            _animationTimer    += Time.unscaledDeltaTime * ( _isOpened ? _config.windowAnimationSpeed : -_config.windowAnimationSpeed );
             _canvasGroup.alpha =  Mathf.Lerp( 0f, 1f, _animationTimer );
 
             if ( _isOpened && !_canvasGroup.interactable && _canvasGroup.alpha == 1f ) {

@@ -12,7 +12,6 @@ namespace Scripts.Player
 		public float trailEnableDelay = 0.1f;
 		
 		[Header( "Combo Settings" )]
-		public float fresnelFadeDuration      = 0.5f;
 		public float comboRotatingSpeed       = 5;
 		public float comboResettingSpeed      = 3;
 		public float comboObstacleForceRadius = 5;

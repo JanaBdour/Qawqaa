@@ -16,7 +16,6 @@ MonoBehaviour:
   position: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 0}
   trailEnableDelay: 0.5
-  fresnelFadeDuration: 0.5
   comboRotatingSpeed: 2000
   comboResettingSpeed: 10
   comboObstacleForceRadius: 5
@@ -27,6 +26,6 @@ MonoBehaviour:
   platformLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  tapDuration: 0.25
+  tapDuration: 0.4
   holdDuration: 1
   longMoveMultiplier: {x: 3, y: 2}

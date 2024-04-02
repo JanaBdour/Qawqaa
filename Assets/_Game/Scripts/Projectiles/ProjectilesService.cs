@@ -67,7 +67,6 @@ namespace Scripts.Projectiles
 			projectile.transformCached.rotation = Random.rotation;
 			
 			projectile.rigidbodyCached.AddForce( _config.force );
-			projectile.rigidbodyCached.AddTorque( _config.torque );
 		}
 		
 		private void ReleaseProjectile( ProjectileView projectile )

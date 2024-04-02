@@ -29,8 +29,9 @@ namespace Scripts.Collectible
 		private List<CollectibleView>       _views;
 		private ObjectPool<CollectibleView> _pool;
 
-		private EffectView     _collectEffect;
-		private IPlayerService _playerService;
+		private EffectView        _collectEffect;
+		private IPlayerService    _playerService;
+		private IPlatformsService _platformsService;
 		
 		private Dictionary<PlatformView, List<CollectibleView>> _collectiblesByPlatform;
 
@@ -43,6 +44,7 @@ namespace Scripts.Collectible
 
 			_collectEffect          = Object.Instantiate( _config.collectEffectPrefab );
 			_playerService          = playerService;
+			_platformsService       = platformsService;
 			_collectiblesByPlatform = new Dictionary<PlatformView, List<CollectibleView>>( );
 			
 			feedbackService.RegisterAudioSource( _collectEffect.soundSource );
@@ -96,16 +98,16 @@ namespace Scripts.Collectible
 			Random.InitState( (int) DateTime.Now.Ticks );
 
 			var count = Random.Range( _config.minCountPerPlatform, _config.maxCountPerPlatform );
-			
-			var position = platform.transformCached.position + _config.offset;
-			var xSize    = platform.colliderCached.size.x * 0.5f;
+
+			var startPosition = _platformsService.GetStartPosition( platform );
+			var endPosition   = _platformsService.GetEndPosition( platform );
 
 			for ( var index = 0; index < count; index++ )
 			{
-				var newPosition = position.AddX( Random.Range( -xSize, xSize ) );
+				var position = Vector3Extensions.GetRandomVector( startPosition, endPosition ) + _config.offset;
 				var collectible = _pool.Get( );
 
-				collectible.transformCached.position = newPosition; 
+				collectible.transformCached.position = position; 
 				collectible.ResetProperties( );
 
 				if ( _collectiblesByPlatform.ContainsKey( platform ) )

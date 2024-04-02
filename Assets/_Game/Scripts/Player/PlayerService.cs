@@ -56,8 +56,8 @@ namespace Scripts.Player
 			_comboService       = comboService;
 			_shellStartRotation = Player.shellTransform.localRotation;
 
-			comboService.OnStartCombo      += ( ) => Player.StartCombo( true, _config.fresnelFadeDuration );
-			comboService.OnEndCombo        += ( ) => Player.StartCombo( false, _config.fresnelFadeDuration );
+			comboService.OnStartCombo      += ( ) => Player.StartCombo( true );
+			comboService.OnEndCombo        += ( ) => Player.StartCombo( false );
 			playerLoopService.OnStarted    += Reset;
 			playerLoopService.OnUpdateTick += Update;
 		}

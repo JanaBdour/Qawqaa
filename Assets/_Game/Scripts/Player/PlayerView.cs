@@ -53,7 +53,6 @@ namespace Scripts.Player
             rotatingAudioSource.Stop( );
             comboEffect.Stop( true );
             
-            rendererCached.sharedMaterial.SetFloat( "_FresnelStrength", 0 );
             StartCoroutine( DelayEnablingTrailRenderer( ) );
         }
 
@@ -77,9 +76,8 @@ namespace Scripts.Player
             trailRendererCached.Reset( this, true );
         }
 
-        public void StartCombo( bool start, float fresnelDuration )
+        public void StartCombo( bool start )
         {
-            rendererCached.sharedMaterial.DOFloat( start ? 1 : 0, "_FresnelStrength", fresnelDuration );
             if ( start )
             {
                 comboEffect.Play( true );

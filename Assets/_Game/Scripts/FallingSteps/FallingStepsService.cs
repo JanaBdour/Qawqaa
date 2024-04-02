@@ -71,7 +71,7 @@ namespace Scripts.FallingSteps
 		{
 			var lastPlatform         = platform;
 			var lastPlatformPosition = _platformsService.GetStartPosition( lastPlatform ).AddX( -_config.stepDistance );
-			if ( _distanceService.GetDifficulty( lastPlatformPosition.x ) < _config.startDifficulty ||
+			if ( _distanceService.GetDifficulty( lastPlatformPosition.x ) < _config.minDifficulty ||
 			     _platformsService.Platforms.Count                        < 2 ) return;
 
 			var firstPlatform         = _platformsService.Platforms[^2];

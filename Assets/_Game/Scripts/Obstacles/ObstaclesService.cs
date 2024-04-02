@@ -19,12 +19,12 @@ namespace Scripts.Obstacles
 		private ObstaclesConfig          _config;
 		private List<ObstacleView>       _obstacles;
 		private ObjectPool<ObstacleView> _pool;
-		private IDistanceService         _distanceService;
+		private IPlatformsService        _platformsService;
 
 		private Dictionary<PlatformView, List<ObstacleView>> _obstaclesByPlatform;
 
 		[Inject]
-		private void Construct( ObstaclesConfig config, IDistanceService distanceService, IPlayerLoopService playerLoopService, IPlatformsService platformsService )
+		private void Construct( ObstaclesConfig config, IPlatformsService platformsService )
 		{
 			_config    = config;
 			_obstacles = new List<ObstacleView>( );
@@ -32,7 +32,7 @@ namespace Scripts.Obstacles
 			_pool = new ObjectPool<ObstacleView>( CreateObstacle, GetObstacle, ReleaseObstacle, DestroyObstacle, false,
 				_config.poolInitialCount );
 
-			_distanceService     = distanceService;
+			_platformsService    = platformsService;
 			_obstaclesByPlatform = new Dictionary<PlatformView, List<ObstacleView>>( );
 
 			platformsService.OnResetPlatforms  += Reset;
@@ -78,9 +78,10 @@ namespace Scripts.Obstacles
 
 		private void SpawnObstacles( PlatformView platform )
 		{
-			var xSize     = platform.colliderCached.size.x - _config.borderSize * 2;
-			var maxCount  = xSize / _config.maxDistance;
-			var xPosition = 0f;
+			var xSize         = platform.colliderCached.size.x - _config.borderSize * 2;
+			var maxCount      = xSize / _config.maxDistance;
+			var startPosition = _platformsService.GetStartPosition( platform );
+			var xPosition     = 0f;
 			for ( var index = 0; index < maxCount; index++ )
 			{
 				xPosition += Random.Range( _config.minDistance, _config.maxDistance );
@@ -91,7 +92,7 @@ namespace Scripts.Obstacles
 
 			void SpawnObstacle( )
 			{
-				var position = platform.transformCached.position.AddX( xPosition - xSize * 0.5f - platform.colliderCached.offset.x );//* 0.5f + _config.borderSize );
+				var position = startPosition.AddX( xPosition );
 				var obstacle = _pool.Get( );
 
 				obstacle.transformCached.position = position;

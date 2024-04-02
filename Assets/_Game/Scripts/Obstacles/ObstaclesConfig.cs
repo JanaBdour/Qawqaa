@@ -6,7 +6,6 @@ namespace Scripts.Obstacles
 	public class ObstaclesConfig : ScriptableObject
 	{
 		public ObstacleView[] prefabs;
-		public float          xDistance        = 2f;
 		public float          minDistance      = 0.4f;
 		public float          maxDistance      = 0.8f;
 		public float          borderSize       = 0.3f;
