@@ -22,7 +22,13 @@ namespace Scripts.Collectible
 
         public void Initialize( CollectibleConfig config )
         {
-            _config            = config;
+            _config = config;
+            ResetProperties( );
+
+        }
+
+        public void ResetProperties( )
+        {
             _startPosition     = transformCached.position;
             _animationDistance = Random.Range( _config.minAnimationDistance, _config.maxAnimationDistance );
             _animationSpeed    = Random.Range( _config.minAnimationSpeed, _config.maxAnimationSpeed );

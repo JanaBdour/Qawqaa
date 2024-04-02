@@ -7,6 +7,7 @@ namespace Scripts.Collectible
 	public class CollectibleConfig : ScriptableObject
 	{
 		public CollectibleView prefab;
+		public int             poolInitialCount = 15;
 
 		[Header( "Spawn Settings" )]
 		public Vector3 offset              = new Vector3( 0, 0.5f );

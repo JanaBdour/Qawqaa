@@ -8,6 +8,7 @@ using Scripts.Platforms;
 using Scripts.Player;
 using Scripts.PlayerLoop;
 using UnityEngine;
+using UnityEngine.Pool;
 using Zenject;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -24,10 +25,12 @@ namespace Scripts.Collectible
 		
 		public event Action OnUpdateCount = delegate { };
 		
-		private CollectibleConfig     _config;
-		private List<CollectibleView> _views;
-		private EffectView            _collectEffect;
-		private IPlayerService        _playerService;
+		private CollectibleConfig           _config;
+		private List<CollectibleView>       _views;
+		private ObjectPool<CollectibleView> _pool;
+
+		private EffectView     _collectEffect;
+		private IPlayerService _playerService;
 		
 		private Dictionary<PlatformView, List<CollectibleView>> _collectiblesByPlatform;
 
@@ -36,6 +39,7 @@ namespace Scripts.Collectible
 		{
 			_config = config;
 			_views  = new List<CollectibleView>( );
+			_pool   = new ObjectPool<CollectibleView>( CreateCollectible, GetCollectible, ReleaseCollectible, DestroyCollectible, false, _config.poolInitialCount );
 
 			_collectEffect          = Object.Instantiate( _config.collectEffectPrefab );
 			_playerService          = playerService;
@@ -49,12 +53,38 @@ namespace Scripts.Collectible
 			playerLoopService.OnUpdateTick     += HandleCollecting;
 		}
 
+		private CollectibleView CreateCollectible( )
+		{
+			var collectible = Object.Instantiate( _config.prefab );
+			collectible.gameObjectCached.SetActive( false );
+			collectible.Initialize( _config );
+
+			return collectible;
+		}
+
+		private void GetCollectible( CollectibleView collectible )
+		{
+			collectible.gameObjectCached.SetActive( true );
+			_views.Add( collectible );
+		}
+		
+		private void ReleaseCollectible( CollectibleView collectible )
+		{
+			collectible.gameObjectCached.SetActive( false );
+			_views.Remove( collectible );
+		}
+
+		private void DestroyCollectible( CollectibleView collectible )
+		{
+			_views.Remove( collectible );
+		}
+		
 		private void ClearAll( )
 		{
-			foreach ( var view in _views )
+			foreach ( var view in _views.ToArray( ) )
 			{
 				if ( view )
-					Object.Destroy( view.gameObjectCached );
+					_pool.Release( view );
 			}
 
 			_views.Clear( );
@@ -73,11 +103,11 @@ namespace Scripts.Collectible
 			for ( var index = 0; index < count; index++ )
 			{
 				var newPosition = position.AddX( Random.Range( -xSize, xSize ) );
-				var collectible = Object.Instantiate( _config.prefab, newPosition, Quaternion.identity );
-				
-				collectible.Initialize( _config );
-				
-				_views.Add( collectible );
+				var collectible = _pool.Get( );
+
+				collectible.transformCached.position = newPosition; 
+				collectible.ResetProperties( );
+
 				if ( _collectiblesByPlatform.ContainsKey( platform ) )
 					_collectiblesByPlatform[platform].Add( collectible );
 				else
@@ -92,7 +122,7 @@ namespace Scripts.Collectible
 			foreach ( var collectible in _collectiblesByPlatform[platform] )
 			{
 				if ( collectible )
-					Object.Destroy( collectible.gameObjectCached );
+					_pool.Release( collectible );
 			}
 
 			_collectiblesByPlatform[platform].Clear( );
@@ -103,7 +133,7 @@ namespace Scripts.Collectible
 			var playerPosition = _playerService.Player.transformCached.position;
 			foreach ( var view in _views )
 			{
-				if ( !view ) continue;
+				if ( !view || !view.gameObjectCached.activeSelf ) continue;
 
 				var position = view.transformCached.position;
 				var distance = ( position - playerPosition ).sqrMagnitude;
@@ -112,8 +142,8 @@ namespace Scripts.Collectible
 
 				_collectEffect.PlayAtPosition( position );
 				
-				_views.Remove( view );
-				Object.Destroy( view.gameObjectCached );
+				_pool.Release( view );
+
 				CollectedCount++;
 				OnUpdateCount.Invoke( );
 				break;
