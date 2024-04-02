@@ -41,11 +41,11 @@ namespace Scripts.FallingSteps
 		private void TrySpawnSteps( PlatformView platform )
 		{
 			var lastPlatform         = platform;
-			var lastPlatformPosition = _platformsService.GetStartPosition( lastPlatform );
+			var lastPlatformPosition = _platformsService.GetStartPosition( lastPlatform ).AddX( -_config.stepDistance );
 			if ( _distanceService.GetDifficulty( lastPlatformPosition.x ) < _config.startDifficulty || _platformsService.Platforms.Count < 2 ) return;
 
 			var firstPlatform         = _platformsService.Platforms[^2];
-			var firstPlatformPosition = _platformsService.GetEndPosition( firstPlatform );
+			var firstPlatformPosition = _platformsService.GetEndPosition( firstPlatform ).AddX( _config.stepDistance );;
 
 			var distance = Mathf.Abs( lastPlatformPosition.x - firstPlatformPosition.x );
 		

@@ -57,7 +57,7 @@ namespace Scripts.Player
             StartCoroutine( DelayEnablingTrailRenderer( ) );
         }
 
-        public void Move( Vector3 force )
+        public void Move( Vector2 force )
         {
             rigidbodyCached.AddForce( force );
             moveFeedbacks.PlayFeedbacks( );

@@ -26,7 +26,7 @@ namespace Scripts.Player
 		
 		public float   tapDuration        = 0.01f;
 		public float   holdDuration       = 1;
-		public Vector3 longMoveMultiplier = new Vector3( 2, 1 );
+		public Vector2 longMoveMultiplier = new( 3.5f, 2 );
 
 	}
 }

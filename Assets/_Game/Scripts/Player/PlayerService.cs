@@ -105,8 +105,6 @@ namespace Scripts.Player
 		
 		private void HandleMoving( )
 		{
-			var force = new Vector3( _config.throwForce.x, _jumpCounter > 0 ? _config.throwForce.y : 0 );
-			
 			if ( Input.GetMouseButtonDown( 0 ) )
 			{
 				HandleClicking( );
@@ -146,6 +144,8 @@ namespace Scripts.Player
 
 				if ( duration <= _config.tapDuration )
 				{
+					var force = _jumpCounter <= 0 ? _config.throwForce.ZeroY( ) : _config.throwForce;
+
 					Player.Move( force );
 					_jumpCounter--;
 
@@ -153,8 +153,7 @@ namespace Scripts.Player
 				}
 				else if ( duration >= _config.holdDuration )
 				{
-					Player.Move( Vector3.Scale( force, _config.longMoveMultiplier ) );
-					_jumpCounter--;
+					Player.Move( Vector2.Scale( _config.throwForce, _config.longMoveMultiplier ) );
 
 					OnLongMove.Invoke( );
 				}

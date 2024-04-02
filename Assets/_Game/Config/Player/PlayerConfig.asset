@@ -27,6 +27,6 @@ MonoBehaviour:
   platformLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  tapDuration: 0.5
+  tapDuration: 0.25
   holdDuration: 1
   longMoveMultiplier: {x: 3.5, y: 2, z: 0}
