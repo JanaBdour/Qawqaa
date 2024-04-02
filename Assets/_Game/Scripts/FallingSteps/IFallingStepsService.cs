@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Scripts.FallingSteps
 {
-	public interface IFallingStepsService 
+	public interface IFallingStepsService
 	{
 	}
 }

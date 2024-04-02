@@ -80,7 +80,7 @@ namespace Scripts.Platforms
 			
 			_startPlatform = Object.Instantiate( _config.startPlatformPrefab, Vector3.zero, _config.rotation );
 
-			_pool = new ObjectPool<PlatformView>( CreatePlatform, GetPlatform, ReleasePlatform, DestroyPlatform, false, _config.poolInitialCount, _config.poolInitialCount );
+			_pool = new ObjectPool<PlatformView>( CreatePlatform, GetPlatform, ReleasePlatform, DestroyPlatform, false, _config.poolInitialCount );
 			
 			playerLoopService.OnStarted    += DestroyAndSpawn;
 			playerLoopService.OnUpdateTick += HandleDisappearingAndRespawning;

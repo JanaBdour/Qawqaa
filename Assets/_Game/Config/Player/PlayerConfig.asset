@@ -29,4 +29,4 @@ MonoBehaviour:
     m_Bits: 128
   tapDuration: 0.25
   holdDuration: 1
-  longMoveMultiplier: {x: 3.5, y: 2, z: 0}
+  longMoveMultiplier: {x: 3, y: 2}
